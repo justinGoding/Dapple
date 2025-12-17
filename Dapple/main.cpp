@@ -1,16 +1,11 @@
 
 #include "Core.h"
-#include "Renderer\OpenGLWindow.h"
-
-OpenGLWindow window;
+#include "Renderer\Renderer.h"
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
-	window.Init(hInstance);
-	if (!window.Create(hInstance, nCmdShow))
-	{
-		PostQuitMessage(1);
-	}
+	Renderer renderer = Renderer(hInstance, nCmdShow);
+	renderer.Init();
 
 	MSG msg;
 	bool running = true;
@@ -25,9 +20,9 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		window.Render();
+		renderer.Render();
 	}
-	window.Destroy();
+	renderer.OnShutdown();
 
 	return msg.wParam;
 }

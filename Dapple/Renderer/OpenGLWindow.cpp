@@ -1,7 +1,5 @@
 #include "OpenGLWindow.h"
 
-#include "OpenGL.h"
-
 #include "Dbt.h"
 #include <vector>
 
@@ -197,10 +195,9 @@ bool OpenGLWindow::Create(HINSTANCE hInstance, int nCmdShow)
 		return false;
 	}
 
-	// TODO: load openGL functions here
 	if (!LoadModernOpenGL())
 	{
-		ShowMessage(L"Failed to load modern OpenGL functions");
+		ShowMessage(L"Failed to load OpenGL functions");
 		return false;
 	}
 
@@ -221,13 +218,6 @@ void OpenGLWindow::Center()
 	SystemParametersInfo(SPI_GETWORKAREA, 0, &primaryDisplaySize, 0); // system taskbar and application desktop toolbars not included
 	m_config.posX = (primaryDisplaySize.right - m_config.width) / 2;
 	m_config.posY = (primaryDisplaySize.bottom - m_config.height) / 2;
-}
-
-void OpenGLWindow::Render()
-{
-	glClearColor(0.129f, 0.586f, 0.949f, 1.0f); // rgb(33, 150, 243)
-	glClear(GL_COLOR_BUFFER_BIT);
-	SwapBuffers(m_DC);
 }
 
 void OpenGLWindow::Destroy()

@@ -135,10 +135,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Renderer\OpenGL.cpp" />
+    <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\OpenGLWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h" />
+    <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\OpenGL.h" />
     <ClInclude Include="Renderer\OpenGLWindow.h" />
     <ClInclude Include="Renderer\GLHeaders\glcorearb.h" />

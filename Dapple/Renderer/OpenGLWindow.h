@@ -1,7 +1,8 @@
 #pragma once
 
-#include <windows.h>
 #include <string>
+
+#include "OpenGL.h"
 
 class OpenGLWindow
 {
@@ -13,11 +14,10 @@ public:
 	bool Create(HINSTANCE hInstance, int nCmdShow);
 
 	void Center();
-	void Render();
+	HDC GetDeviceContext() { return m_DC; }
 	void Destroy();
 
 private:
-
 	ATOM RegisterOpenGLClass(HINSTANCE hInstance);
 	static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
