@@ -28,14 +28,12 @@ void Renderer::OnShutdown()
 
 void Renderer::Render()
 {
-	static const GLfloat red[] = { 0.129f, 0.586f, 0.949f, 1.0f };
-	glClearBufferfv(GL_COLOR, 0, red);
+	static const GLfloat blue[] = { 0.129f, 0.586f, 0.949f, 1.0f };
+	glClearBufferfv(GL_COLOR, 0, blue);
 
 	glUseProgram(m_Program);
 
-	glPointSize(40.0f);
-
-	glDrawArrays(GL_POINTS, 0, 1);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	SwapBuffers(m_Window.GetDeviceContext());
 }
@@ -44,19 +42,22 @@ void Renderer::CompileShaders()
 {
 	static const char* vs_source[] =
 	{
-		"#version 460 core							\n"
-		"											\n"
-		"void main(void)							\n"
-		"{											\n"
-		"	gl_Position = vec4(0.0, 0.0, 0.0, 1.0);	\n"
-		"}											\n"
+		"#version 460 core													\n"
+		"																	\n"
+		"void main(void)													\n"
+		"{																	\n"
+		"	const vec4 vertices[3] = vec4[3](vec4( 0.25, -0.25, 0.5, 1.0),	\n"
+		"									 vec4(-0.25, -0.25, 0.5, 1.0),	\n"
+		"									 vec4( 0.25,  0.25, 0.5, 1.0));	\n"
+		"	gl_Position = vertices[gl_VertexID];							\n"
+		"}																	\n"
 	};
 
 	static const char* fs_source[] =
 	{
 		"#version 460 core						\n"
 		"										\n"
-		"out vec4 color							\n"
+		"out vec4 color;						\n"
 		"										\n"
 		"void main(void)						\n"
 		"{										\n"
