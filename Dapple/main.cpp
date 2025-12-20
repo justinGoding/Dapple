@@ -1,4 +1,6 @@
 
+#include <chrono>
+
 #include "Core.h"
 #include "Renderer\Renderer.h"
 
@@ -6,6 +8,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 {
 	Renderer renderer = Renderer(hInstance, nCmdShow);
 	renderer.Init();
+
+	auto start = std::chrono::high_resolution_clock::now();
 
 	MSG msg;
 	bool running = true;
@@ -20,7 +24,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		renderer.Render();
+		auto time = std::chrono::high_resolution_clock::now();
+		renderer.Render(std::chrono::duration<float, std::milli>(time - start).count());
 	}
 	renderer.OnShutdown();
 

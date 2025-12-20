@@ -12,10 +12,10 @@ public:
 	void Init();
 	void OnShutdown();
 
-	void Render();
+	void Render(float currentTime);
 private:
 	void CompileShaders();
-
+	std::string ReadFile(const std::string& filepath);
 private:
 	OpenGLWindow m_Window;
 

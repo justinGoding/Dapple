@@ -33,6 +33,8 @@ extern PFNGLUSEPROGRAMPROC glUseProgram;
 extern PFNGLCREATEVERTEXARRAYSPROC glDeleteVertexArrays;
 extern PFNGLDELETEPROGRAMPROC glDeleteProgram;
 
+extern PFNGLVERTEXATTRIB4FVPROC glVertexAttrib4fv;
+
 static bool LoadModernOpenGL()
 {
 	if (ModernOpenGLLoaded) return true;
@@ -51,6 +53,8 @@ static bool LoadModernOpenGL()
 
 	LOAD_GL_FUNC(glDeleteVertexArrays, PFNGLCREATEVERTEXARRAYSPROC);
 	LOAD_GL_FUNC(glDeleteProgram, PFNGLDELETEPROGRAMPROC);
+
+	LOAD_GL_FUNC(glVertexAttrib4fv, PFNGLVERTEXATTRIB4FVPROC);
 
 	ModernOpenGLLoaded = true;
 	return true;
