@@ -37,7 +37,9 @@ void Renderer::Render(float currentTime)
 
 	glUseProgram(m_Program);
 
-	glDrawArrays(GL_PATCHES, 0, 3);
+	glPointSize(5.0f);
+
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	SwapBuffers(m_Window.GetDeviceContext());
 }
@@ -46,9 +48,11 @@ void Renderer::CompileShaders()
 {
 	static std::string vs_source = ReadFile("Renderer/Shaders/vertex.glsl");
 
-	static std::string tcs_source = ReadFile("Renderer/Shaders/tessellationControl.glsl");
+	/*static std::string tcs_source = ReadFile("Renderer/Shaders/tessellationControl.glsl");
 
 	static std::string tes_source = ReadFile("Renderer/Shaders/tessellationEval.glsl");
+
+	static std::string gs_source = ReadFile("Renderer/Shaders/geometry.glsl");*/
 
 	static std::string fs_source = ReadFile("Renderer/Shaders/fragment.glsl");
 	
@@ -58,7 +62,7 @@ void Renderer::CompileShaders()
 	glShaderSource(vs, 1, &sourceCStr, NULL);
 	glCompileShader(vs);
 
-	GLuint tcs = glCreateShader(GL_TESS_CONTROL_SHADER);
+	/*GLuint tcs = glCreateShader(GL_TESS_CONTROL_SHADER);
 	sourceCStr = tcs_source.c_str();
 	glShaderSource(tcs, 1, &sourceCStr, NULL);
 	glCompileShader(tcs);
@@ -68,14 +72,20 @@ void Renderer::CompileShaders()
 	glShaderSource(tes, 1, &sourceCStr, NULL);
 	glCompileShader(tes);
 
+	GLuint gs = glCreateShader(GL_GEOMETRY_SHADER);
+	sourceCStr = gs_source.c_str();
+	glShaderSource(gs, 1, &sourceCStr, NULL);
+	glCompileShader(gs);*/
+
 	GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
 	sourceCStr = fs_source.c_str();
 	glShaderSource(fs, 1, &sourceCStr, NULL);
 	glCompileShader(fs);
 
 	glAttachShader(m_Program, vs);
-	glAttachShader(m_Program, tcs);
+	/*glAttachShader(m_Program, tcs);
 	glAttachShader(m_Program, tes);
+	glAttachShader(m_Program, gs);*/
 	glAttachShader(m_Program, fs);
 
 	glLinkProgram(m_Program);
@@ -83,7 +93,7 @@ void Renderer::CompileShaders()
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 std::string Renderer::ReadFile(const std::string& filepath)
