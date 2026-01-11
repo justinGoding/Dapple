@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core.h"
 #include "vector.h"
 
 namespace sfm
@@ -51,6 +50,8 @@ namespace sfm
 		{
 			return rows[index];
 		}
+
+		VM_INLINE operator const float* () const { return (float*) & rows; }
 
 		vec4f rows[4];
 	};
@@ -106,20 +107,12 @@ namespace sfm
 	VM_INLINE vec4f operator* (vec4f a, mat4f b)
 	{
 		b = transpose(b);
-		a.setX(dot(a, b.rows[0]));
-		a.setY(dot(a, b.rows[1]));
-		a.setZ(dot(a, b.rows[2]));
-		a.setW(dot(a, b.rows[3]));
-		return a;
+		return vec4f(dot(a, b.rows[0]), dot(a, b.rows[1]), dot(a, b.rows[2]), dot(a, b.rows[3]));
 	}
 
 	VM_INLINE vec4f operator* (mat4f b, vec4f a)
 	{
-		a.setX(dot(a, b.rows[0]));
-		a.setY(dot(a, b.rows[1]));
-		a.setZ(dot(a, b.rows[2]));
-		a.setW(dot(a, b.rows[3]));
-		return a;
+		return vec4f(dot(a, b.rows[0]), dot(a, b.rows[1]), dot(a, b.rows[2]), dot(a, b.rows[3]));
 	}
 
 	VM_INLINE mat4f operator* (const mat4f& a, mat4f b)
@@ -176,6 +169,19 @@ namespace sfm
 	VM_INLINE mat4f operator- (mat4f m)
 	{
 		return mat4f(0.0f) - m;
+	}
+
+	VM_INLINE bool operator== (const mat4f& a, const mat4f& b)
+	{
+		return all(a[0] == b[0]) &&
+			all(a[1] == b[1]) &&
+			all(a[2] == b[2]) &&
+			all(a[3] == b[3]);
+	}
+
+	VM_INLINE bool operator!= (const mat4f& a, const mat4f& b)
+	{
+		return !(a == b);
 	}
 
 	VM_INLINE mat4f abs(mat4f m)
@@ -307,18 +313,12 @@ namespace sfm
 	VM_INLINE vec3f operator* (vec3f a, mat3f b)
 	{
 		b = transpose(b);
-		a.setX(dot(a, b.rows[0]));
-		a.setY(dot(a, b.rows[1]));
-		a.setZ(dot(a, b.rows[2]));
-		return a;
+		return vec3f(dot(a, b.rows[0]), dot(a, b.rows[1]), dot(a, b.rows[2]));
 	}
 
 	VM_INLINE vec3f operator* (mat3f b, vec3f a)
 	{
-		a.setX(dot(a, b.rows[0]));
-		a.setY(dot(a, b.rows[1]));
-		a.setZ(dot(a, b.rows[2]));
-		return a;
+		return vec3f(dot(a, b.rows[0]), dot(a, b.rows[1]), dot(a, b.rows[2]));
 	}
 
 	VM_INLINE mat3f operator* (const mat3f& a, mat3f b)
@@ -367,6 +367,18 @@ namespace sfm
 	VM_INLINE mat3f operator- (mat3f m)
 	{
 		return mat3f(0.0f) - m;
+	}
+
+	VM_INLINE bool operator== (const mat3f& a, const mat3f& b)
+	{
+		return all(a[0] == b[0]) &&
+			all(a[1] == b[1]) &&
+			all(a[2] == b[2]);
+	}
+
+	VM_INLINE bool operator!= (const mat3f& a, const mat3f& b)
+	{
+		return !(a == b);
 	}
 
 	VM_INLINE mat3f abs(mat3f m)
@@ -462,19 +474,15 @@ namespace sfm
 		return a;
 	}
 
-	VM_INLINE vec2f operator* (vec2f a, mat2f b)
+	VM_INLINE vec2f operator* (const vec2f& a, mat2f b)
 	{
 		b = transpose(b);
-		a.setX(dot(a, b.rows[0]));
-		a.setY(dot(a, b.rows[1]));
-		return a;
+		return vec2f(dot(a, b.rows[0]), dot(a, b.rows[1]));
 	}
 
 	VM_INLINE vec2f operator* (mat2f b, vec2f a)
 	{
-		a.setX(dot(a, b.rows[0]));
-		a.setY(dot(a, b.rows[1]));
-		return a;
+		return vec2f(dot(a, b.rows[0]), dot(a, b.rows[1]));
 	}
 
 	VM_INLINE mat2f operator* (const mat2f& a, mat2f b)
@@ -517,6 +525,17 @@ namespace sfm
 	VM_INLINE mat2f operator- (mat2f m)
 	{
 		return mat2f(0.0f) - m;
+	}
+
+	VM_INLINE bool operator== (const mat2f& a, const mat2f& b)
+	{
+		return all(a[0] == b[0]) &&
+			all(a[1] == b[1]);
+	}
+
+	VM_INLINE bool operator!= (const mat2f& a, const mat2f& b)
+	{
+		return !(a == b);
 	}
 
 	VM_INLINE mat2f abs(mat2f m)

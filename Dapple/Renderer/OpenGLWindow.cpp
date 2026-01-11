@@ -7,8 +7,8 @@ bool OpenGLWindow::OpenGLFunctionsLoaded = false;
 
 OpenGLWindow::OpenGLWindow()
 {
-	m_config.width = 1024;
-	m_config.height = 720;
+	m_config.width = 800;
+	m_config.height = 600;
 	m_config.posX = CW_USEDEFAULT;
 	m_config.posY = 0;
 	m_config.windowed = true;
@@ -24,8 +24,16 @@ OpenGLWindow::~OpenGLWindow()
 bool OpenGLWindow::Create(HINSTANCE hInstance, int nCmdShow)
 {
 	// Create temporary window
+
+	LPTSTR tmpClass = MAKEINTATOM(RegisterTempClass(hInstance));
+	if (tmpClass == 0)
+	{
+		ShowMessage(L"Win32: failed to register temporary window class");
+		return false;
+	}
+
 	HWND tempWND = CreateWindowExW(
-		m_exStyle, m_windowClass,
+		m_exStyle, tmpClass,
 		L"Temporary Window",
 		m_style,
 		0, 0,							// position x, y
@@ -114,6 +122,8 @@ bool OpenGLWindow::Create(HINSTANCE hInstance, int nCmdShow)
 		GetModuleHandleW(NULL), NULL);	// instance, param
 	if (m_WND == NULL) LastWin32Error();
 
+	SetPropW(m_WND, L"OpenGL Window", this);
+
 	ChangeWindowMessageFilterEx(m_WND, WM_DROPFILES, MSGFLT_ALLOW, NULL);
 	ChangeWindowMessageFilterEx(m_WND, WM_COPYDATA, MSGFLT_ALLOW, NULL);
 
@@ -134,7 +144,7 @@ bool OpenGLWindow::Create(HINSTANCE hInstance, int nCmdShow)
 	wp.showCmd = SW_HIDE;
 	SetWindowPlacement(m_WND, &wp);
 
-	DragAcceptFiles(m_WND, TRUE);
+	//DragAcceptFiles(m_WND, TRUE);
 
 	m_DC = GetDC(m_WND);
 	if (m_DC == NULL) LastWin32Error();
@@ -245,6 +255,20 @@ bool OpenGLWindow::Init(HINSTANCE hInstance)
 	return false;
 }
 
+ATOM OpenGLWindow::RegisterTempClass(HINSTANCE hInstance)
+{
+	WNDCLASSEX wcex;
+	ZeroMemory(&wcex, sizeof(wcex));
+	wcex.cbSize = sizeof(wcex);
+	wcex.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+	wcex.lpfnWndProc = TempWindowProc;
+	wcex.hInstance = GetModuleHandleW(NULL);
+	wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wcex.lpszClassName = L"Temp Window";
+
+	return RegisterClassEx(&wcex);
+}
+
 ATOM OpenGLWindow::RegisterOpenGLClass(HINSTANCE hInstance)
 {
 	WNDCLASSEX wcex;
@@ -261,10 +285,47 @@ ATOM OpenGLWindow::RegisterOpenGLClass(HINSTANCE hInstance)
 	return RegisterClassEx(&wcex);
 }
 
-LRESULT OpenGLWindow::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT OpenGLWindow::TempWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
+	case WM_CLOSE:
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hWnd, uMsg, wParam, lParam);
+	}
+	return 0;
+}
+
+LRESULT OpenGLWindow::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	static RECT border_thickness = { 4, 4, 4, 4 };
+
+	OpenGLWindow* window = (OpenGLWindow*) GetPropW(hWnd, L"OpenGL Window");
+	switch (uMsg)
+	{
+	case WM_SIZE:
+	{
+		const int width = LOWORD(lParam);
+		const int height = HIWORD(lParam);
+
+
+		RECT size_rect;
+		GetWindowRect(hWnd, &size_rect);
+
+		SetWindowPos(
+			hWnd, NULL,
+			size_rect.left, size_rect.top,
+			size_rect.right - size_rect.left, size_rect.bottom - size_rect.top,
+			SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE
+		);
+
+		window->GetWindowSize();
+		window->m_WindowSizeCallback(window->m_config.width, window->m_config.height);
+		
+	}
+	break;
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		break;
@@ -367,4 +428,9 @@ void OpenGLWindow::LastWin32Error()
 
 	LocalFree(lpMsgBuf);
 	ExitProcess(dw);
+}
+
+void OpenGLWindow::SetWindowSizeCallback(WindowSizeFunction callback)
+{
+	m_WindowSizeCallback = callback;
 }

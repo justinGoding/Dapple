@@ -146,6 +146,7 @@
     <ClCompile Include="Renderer\OpenGL.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\OpenGLWindow.cpp" />
+    <ClCompile Include="Renderer\sb7\sb7object.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h" />
@@ -159,6 +160,8 @@
     <ClInclude Include="Renderer\GLHeaders\KHR\khrplatform.h" />
     <ClInclude Include="Renderer\GLHeaders\wgl.h" />
     <ClInclude Include="Renderer\GLHeaders\wglext.h" />
+    <ClInclude Include="Renderer\sb7\sb7object.h" />
+    <ClInclude Include="Renderer\sb7\sb6mfile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string>
-
 #include "OpenGL.h"
+
+typedef void (*WindowSizeFunction)(int width, int height);
 
 class OpenGLWindow
 {
@@ -17,8 +17,12 @@ public:
 	HDC GetDeviceContext() { return m_DC; }
 	void Destroy();
 
+	void SetWindowSizeCallback(WindowSizeFunction callback);
+
 private:
+	ATOM RegisterTempClass(HINSTANCE hInstance);
 	ATOM RegisterOpenGLClass(HINSTANCE hInstance);
+	static LRESULT CALLBACK TempWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 	static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	bool CreateHelperWindow(HINSTANCE hInstance);
@@ -29,7 +33,8 @@ private:
 	void ShowMessage(LPCWSTR message);
 	void LastWin32Error();
 
-private:
+
+public:
 	static bool OpenGLFunctionsLoaded;
 
 	LPTSTR m_windowClass;
@@ -60,5 +65,8 @@ private:
 		HWND window;
 	} m_monitor;
 	uint8_t m_monitorCount = 0;
+
+public:
+	WindowSizeFunction m_WindowSizeCallback = nullptr;
 };
 

@@ -65,6 +65,13 @@ namespace sfm {
 		VM_INLINE float operator[] (size_t i) const { return m.m128_f32[i]; }
 		VM_INLINE float& operator[] (size_t i) { return m.m128_f32[i]; }
 
+		VM_INLINE operator const float* () const 
+		{ 
+			float p[4] = {0, 0, 0, 0};
+			store(p);
+			return p; 
+		}
+
 		__m128 m;
 	};
 

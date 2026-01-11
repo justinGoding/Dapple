@@ -1,25 +1,32 @@
 #pragma once
 
-#include "..\Core.h"
+#include "..\math\VectorMath.h"
+#include "..\math\MatrixMath.h"
 #include "OpenGLWindow.h"
+
 
 class Renderer
 {
 public:
-	Renderer(HINSTANCE hInstance, int nCmdShow);
-	~Renderer();
+	static void Init(HINSTANCE hInstance, int nCmdShow);
+	static void OnShutdown();
 
-	void Init();
-	void OnShutdown();
-
-	void Render(float currentTime);
+	static void Render(float currentTime);
 private:
-	void CompileShaders();
-	std::string ReadFile(const std::string& filepath);
-private:
-	OpenGLWindow m_Window;
+	static void CompileShaders();
+	static std::string ReadFile(const std::string& filepath);
 
-	GLuint m_Program;
-	GLuint m_vao;
+	static void OnResize(int width, int height);
+private:
+	static OpenGLWindow Window;
+
+	static GLuint Program;
+	static GLuint vao;
+	static GLuint buffer;
+	static GLint mv_location;
+	static GLint proj_location;
+
+	static float aspect;
+	static sfm::mat4f proj_matrix;
 };
 

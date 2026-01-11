@@ -1,28 +1,28 @@
-#include <cmath>
-
 #include "MatrixMath.h"
 
-inline sfm::mat4f translation(float x, float y, float z)
+#include <cmath>
+
+sfm::mat4f translation(float x, float y, float z)
 {
 	return sfm::mat4f(
-		1.0f, 0.0f, 0.0f, x,
-		0.0f, 1.0f, 0.0f, y,
-		0.0f, 0.0f, 1.0f, z,
-		0.0f, 0.0f, 0.0f, 1.0f
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		x, y, z, 1.0f
 	);
 }
 
-inline sfm::mat4f translation(const sfm::vec3f& t)
+sfm::mat4f translation(const sfm::vec3f& t)
 {
 	return sfm::mat4f(
-		1.0f, 0.0f, 0.0f, t.x(),
-		0.0f, 1.0f, 0.0f, t.y(),
-		0.0f, 0.0f, 1.0f, t.z(),
-		0.0f, 0.0f, 0.0f, 1.0f
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		t.x(), t.y(), t.z(), 1.0f
 	);
 }
 
-inline sfm::mat4f rotation(float angle_x, float angle_y, float angle_z)
+sfm::mat4f rotation(float angle_x, float angle_y, float angle_z)
 {
 	float cos_x = cos(angle_x);
 	float cos_y = cos(angle_y);
@@ -40,33 +40,29 @@ inline sfm::mat4f rotation(float angle_x, float angle_y, float angle_z)
 	);
 }
 
-inline sfm::mat4f rotation(float angle, float x, float y, float z)
+sfm::mat4f rotation(float angle, float x, float y, float z)
 {
-	float cos_t = cos(angle);
-	float sin_t = sin(angle);
+	const float x2 = x * x;
+	const float y2 = y * y;
+	const float z2 = z * z;
+	const float c = cosf(angle);
+	const float s = sinf(angle);
+	const float omc = 1.0f - c;
 
 	return sfm::mat4f(
-		x * x * (1 - cos_t) + cos_t, x * y * (1 - cos_t) + z * sin_t, x * z * (1 - cos_t) - y * sin_t, 0.0f,
-		x * y * (1 - cos_t) - z * sin_t, y * y * (1 - cos_t) + cos_t, y * z * (1 - cos_t) + z * sin_t, 0.0f,
-		x * z * (1 - cos_t) + y * sin_t, y * z * (1 - cos_t) - x * sin_t, z * z * (1 - cos_t) + cos_t, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f
+		x2 * omc + c,			y * x * omc + z * s,	x * z * omc - y * s,	0,
+		x * y * omc - z * s,	y2 * omc + c,			y * z * omc + x * s,	0,
+		x * z * omc + y * s,	y * z * omc - x * s,	z2 * omc + c,			0,
+		0,						0,						0,						1
 	);
 }
 
-inline sfm::mat4f rotation(float angle, const sfm::vec3f& axis)
+sfm::mat4f rotation(float angle, const sfm::vec3f& axis)
 {
-	float cos_t = cos(angle);
-	float sin_t = sin(angle);
-
-	return sfm::mat4f(
-		axis.x() * axis.x() * (1 - cos_t) + cos_t, axis.x() * axis.y() * (1 - cos_t) + axis.z() * sin_t, axis.x() * axis.z() * (1 - cos_t) - axis.y() * sin_t, 0.0f,
-		axis.x() * axis.y() * (1 - cos_t) - axis.z() * sin_t, axis.y() * axis.y() * (1 - cos_t) + cos_t, axis.y() * axis.z() * (1 - cos_t) + axis.z() * sin_t, 0.0f,
-		axis.x() * axis.z() * (1 - cos_t) + axis.y() * sin_t, axis.y() * axis.z() * (1 - cos_t) - axis.x() * sin_t, axis.z() * axis.z() * (1 - cos_t) + cos_t, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f
-	);
+	return rotation(angle, axis.x(), axis.y(), axis.z());
 }
 
-inline sfm::mat4f scale(float x, float y, float z)
+sfm::mat4f scale(float x, float y, float z)
 {
 	return sfm::mat4f(
 		x, 0.0f, 0.0f, 0.0f,
@@ -76,7 +72,7 @@ inline sfm::mat4f scale(float x, float y, float z)
 	);
 }
 
-inline sfm::mat4f scale(const sfm::vec3f& s)
+sfm::mat4f scale(const sfm::vec3f& s)
 {
 	return sfm::mat4f(
 		s.x(), 0.0f, 0.0f, 0.0f,
@@ -86,7 +82,7 @@ inline sfm::mat4f scale(const sfm::vec3f& s)
 	);
 }
 
-inline sfm::mat4f scale(float x)
+sfm::mat4f scale(float x)
 {
 	return sfm::mat4f(
 		x, 0.0f, 0.0f, 0.0f,
@@ -96,7 +92,7 @@ inline sfm::mat4f scale(float x)
 	);
 }
 
-inline sfm::mat4f frustum(float left, float right, float bottom, float top, float near, float far)
+sfm::mat4f frustum(float left, float right, float bottom, float top, float near, float far)
 {
 	return sfm::mat4f(
 		(2 * near) / (right - left), 0.0f, (right + left) / (right - left), 0.0f,
@@ -106,7 +102,7 @@ inline sfm::mat4f frustum(float left, float right, float bottom, float top, floa
 	);
 }
 
-inline sfm::mat4f perspective(float fovy, float aspect, float near, float far)
+sfm::mat4f perspective(float fovy, float aspect, float near, float far)
 {
 	float q = 1.0f / tan(0.5f * fovy);
 	float A = q / aspect;
@@ -121,7 +117,7 @@ inline sfm::mat4f perspective(float fovy, float aspect, float near, float far)
 	);
 }
 
-inline sfm::mat4f ortho(float left, float right, float bottom, float top, float near, float far)
+sfm::mat4f ortho(float left, float right, float bottom, float top, float near, float far)
 {
 	return sfm::mat4f(
 		2 / (right - left), 0.0f,				0.0f,				(left + right) / (left - right),
@@ -131,7 +127,7 @@ inline sfm::mat4f ortho(float left, float right, float bottom, float top, float 
 	);
 }
 
-inline sfm::mat4f lookat(const sfm::vec3f& eye, const sfm::vec3f& center, const sfm::vec3f& up)
+sfm::mat4f lookat(const sfm::vec3f& eye, const sfm::vec3f& center, const sfm::vec3f& up)
 {
 	sfm::vec3f forward = sfm::normalize(center - eye);
 	sfm::vec3f side = sfm::cross(forward, up);

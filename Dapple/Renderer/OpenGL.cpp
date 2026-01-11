@@ -11,6 +11,7 @@ PFNGLSHADERSOURCEPROC glShaderSource = nullptr;
 PFNGLCOMPILESHADERPROC glCompileShader = nullptr;
 PFNGLATTACHSHADERPROC glAttachShader = nullptr;
 PFNGLLINKPROGRAMPROC glLinkProgram = nullptr;
+PFNGLCREATEVERTEXARRAYSPROC glCreateVertexArrays = nullptr;
 PFNGLGENVERTEXARRAYSPROC glGenVertexArrays = nullptr;
 PFNGLBINDVERTEXARRAYPROC glBindVertexArray = nullptr;
 
@@ -21,3 +22,42 @@ PFNGLCREATEVERTEXARRAYSPROC glDeleteVertexArrays = nullptr;
 PFNGLDELETEPROGRAMPROC glDeleteProgram = nullptr;
 
 PFNGLVERTEXATTRIB4FVPROC glVertexAttrib4fv = nullptr;
+
+PFNGLCREATEBUFFERSPROC glCreateBuffers = nullptr;
+PFNGLBINDBUFFERPROC glBindBuffer = nullptr;
+PFNGLBUFFERSTORAGEPROC glBufferStorage = nullptr;
+PFNGLNAMEDBUFFERSTORAGEPROC glNamedBufferStorage = nullptr;
+PFNGLBUFFERSUBDATAPROC glBufferSubData = nullptr;
+PFNGLNAMEDBUFFERSUBDATAPROC glNamedBufferSubData = nullptr;
+
+PFNGLMAPBUFFERPROC glMapBuffer = nullptr;
+PFNGLMAPNAMEDBUFFERPROC glMapNamedBuffer = nullptr;
+PFNGLUNMAPBUFFERPROC glUnmapBuffer = nullptr;
+PFNGLUNMAPNAMEDBUFFERPROC glUnmapNamedBuffer = nullptr;
+PFNGLMAPBUFFERRANGEPROC glMapBufferRange = nullptr;
+PFNGLMAPNAMEDBUFFERRANGEPROC glMapNamedBufferRange = nullptr;
+
+PFNGLCLEARBUFFERSUBDATAPROC glClearBufferSubData = nullptr;
+PFNGLCLEARNAMEDBUFFERSUBDATAPROC glClearNamedBufferSubData = nullptr;
+PFNGLCOPYBUFFERSUBDATAPROC glCopyBufferSubData = nullptr;
+PFNGLCOPYNAMEDBUFFERSUBDATAPROC glCopyNamedBufferSubData = nullptr;
+
+PFNGLVERTEXARRAYATTRIBBINDINGPROC glVertexArrayAttribBinding = nullptr;
+PFNGLVERTEXARRAYVERTEXBUFFERPROC glVertexArrayVertexBuffer = nullptr;
+PFNGLVERTEXARRAYATTRIBFORMATPROC glVertexArrayAttribFormat = nullptr;
+PFNGLENABLEVERTEXARRAYATTRIBPROC glEnableVertexArrayAttrib = nullptr;
+PFNGLDISABLEVERTEXARRAYATTRIBPROC glDisableVertexArrayAttrib = nullptr;
+PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray = nullptr;
+PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray = nullptr;
+
+PFNGLGETATTRIBLOCATIONPROC glGetAttribLocation = nullptr;
+
+PFNGLGENBUFFERSPROC glGenBuffers = nullptr;
+PFNGLBUFFERDATAPROC glBufferData = nullptr;
+PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer = nullptr;
+PFNGLDELETEBUFFERSPROC glDeleteBuffers = nullptr;
+PFNGLDRAWELEMENTSINSTANCEDBASEINSTANCEPROC glDrawElementsInstancedBaseInstance = nullptr;
+PFNGLDRAWARRAYSINSTANCEDBASEINSTANCEPROC glDrawArraysInstancedBaseInstance = nullptr;
+
+PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv = nullptr;
+PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = nullptr;

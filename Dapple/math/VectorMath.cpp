@@ -1,6 +1,6 @@
-#include <cmath>
-
 #include "VectorMath.h"
+
+#include <cmath>
 
 float angle(sfm::vec3f& a, sfm::vec3f& b)
 {

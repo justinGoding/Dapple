@@ -1,19 +1,17 @@
 #version 460 core
 
-// 'vs_color' is an output that will be sent to the next shader stage
-out vec4 vs_color;
+in vec4 position;
+
+out VS_OUT
+{
+	vec4 color;
+} vs_out;
+
+uniform mat4 mv_matrix;
+uniform mat4 proj_matrix;
 
 void main(void)													
 {																	
-	const vec4 vertices[3] = vec4[3](vec4( 0.25, -0.25, 0.5, 1.0),
-									 vec4(-0.25, -0.25, 0.5, 1.0),
-									 vec4( 0.25,  0.25, 0.5, 1.0));
-	const vec4 colors[] = vec4[3](vec4( 1.0, 0.0, 0.0, 1.0),
-								  vec4( 0.0, 1.0, 0.0, 1.0),
-								  vec4( 0.0, 0.0, 1.0, 1.0));
-
-	gl_Position = vertices[gl_VertexID];
-
-	// Output a fixed value for vs_color
-	vs_color = colors[gl_VertexID];
+	gl_Position = proj_matrix * mv_matrix * position;
+	vs_out.color = position * 2.0 + vec4(0.5, 0.5, 0.5, 0.0);
 }																

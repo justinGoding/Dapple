@@ -6,8 +6,7 @@
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
-	Renderer renderer = Renderer(hInstance, nCmdShow);
-	renderer.Init();
+	Renderer::Init(hInstance, nCmdShow);
 
 	auto start = std::chrono::high_resolution_clock::now();
 
@@ -25,9 +24,9 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 			DispatchMessage(&msg);
 		}
 		auto time = std::chrono::high_resolution_clock::now();
-		renderer.Render(std::chrono::duration<float, std::milli>(time - start).count());
+		Renderer::Render(std::chrono::duration<float, std::milli>(time - start).count() / 1000.0f);
 	}
-	renderer.OnShutdown();
+	Renderer::OnShutdown();
 
 	return msg.wParam;
 }
