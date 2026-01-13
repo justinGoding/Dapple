@@ -10,6 +10,7 @@ GLuint Renderer::vao = 0;
 GLuint Renderer::buffer = 0;
 GLint Renderer::mv_location = 0;
 GLint Renderer::proj_location = 0;
+GLuint Renderer::texture = 0;
 
 float Renderer::aspect = 0.0f;
 sfm::mat4f Renderer::proj_matrix;
@@ -23,86 +24,48 @@ void Renderer::Init(HINSTANCE hInstance, int nCmdShow)
 		PostQuitMessage(1);
 	}
 
+	// Generate a name for the texture
+	glGenTextures(1, &texture);
+
+	// Now bind it to the context using the GL_TEXTURE_2D binding point
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	// Specify the amount of storage we want to use for the texture
+	glTexStorage2D(
+		GL_TEXTURE_2D,	// 2D texture
+		8,				// 8 mipmap levels
+		GL_RGBA32F,		// 32-bit floating-point RGBA data
+		256, 256		// 256 x 256 texels
+	);
+
+	// Define some data to upload into the texture
+	float* data = new float[256 * 256 * 4];
+
+	// generate_texture() is a function that fills memory with image data
+	GenerateTexture(data, 256, 256);
+
+	// Assume the texture is already bound to the GL_TEXTURE_2D target
+	glTexSubImage2D(
+		GL_TEXTURE_2D,	// 2D texture
+		0,				// Level 0
+		0, 0,			// Offset 0, 0
+		256, 256,		// 256 x 256 texels, replace entire image
+		GL_RGBA,		// Four channel data
+		GL_FLOAT,		// Floating-point data
+		data			// Pointer to data
+	);
+
+	// Free the memory we allocated before - \GL now has our data
+	delete[] data;
+
 	CompileShaders();
-
-	mv_location = glGetUniformLocation(Program, "mv_matrix");
-	proj_location = glGetUniformLocation(Program, "proj_matrix");
-
-	// First create and bind a vertex array object
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-	static const GLfloat vertex_positions[] =
-	{
-		-0.25f,  0.25f, -0.25f,
-		-0.25f, -0.25f, -0.25f,
-		 0.25f, -0.25f, -0.25f,
-
-		 0.25f, -0.25f, -0.25f,
-		 0.25f,  0.25f, -0.25f,
-		-0.25f,  0.25f, -0.25f,
-
-		 0.25f, -0.25f, -0.25f,
-		 0.25f, -0.25f,  0.25f,
-		 0.25f,  0.25f, -0.25f,
-
-		 0.25f, -0.25f,  0.25f,
-		 0.25f,  0.25f,  0.25f,
-		 0.25f,  0.25f, -0.25f,
-
-		 0.25f, -0.25f,  0.25f,
-		-0.25f, -0.25f,  0.25f,
-		 0.25f,  0.25f,  0.25f,
-
-		-0.25f, -0.25f,  0.25f,
-		-0.25f,  0.25f,  0.25f,
-		 0.25f,  0.25f,  0.25f,
-
-		-0.25f, -0.25f,  0.25f,
-		-0.25f, -0.25f, -0.25f,
-		-0.25f,  0.25f,  0.25f,
-
-		-0.25f, -0.25f, -0.25f,
-		-0.25f,  0.25f, -0.25f,
-		-0.25f,  0.25f,  0.25f,
-
-		-0.25f, -0.25f,  0.25f,
-		 0.25f, -0.25f,  0.25f,
-		 0.25f, -0.25f, -0.25f,
-
-		 0.25f, -0.25f, -0.25f,
-		-0.25f, -0.25f, -0.25f,
-		-0.25f, -0.25f,  0.25f,
-
-		-0.25f,  0.25f, -0.25f,
-		 0.25f,  0.25f, -0.25f,
-		 0.25f,  0.25f,  0.25f,
-
-		 0.25f,  0.25f,  0.25f,
-		-0.25f,  0.25f,  0.25f,
-		-0.25f,  0.25f, -0.25f
-	};
-
-	// Now generate some data and put it in a buffer object
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_positions), vertex_positions, GL_STATIC_DRAW);
-
-	// Setup our vertex attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-	glEnableVertexAttribArray(0);
-
-	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW);
-
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
 }
 
 void Renderer::OnShutdown()
 {
-	glDeleteVertexArrays(1, &vao);
 	glDeleteProgram(Program);
+	glDeleteVertexArrays(1, &vao);
+	glDeleteTextures(1, &texture);
 
 	Window.Destroy();
 }
@@ -110,38 +73,10 @@ void Renderer::OnShutdown()
 void Renderer::Render(float currentTime)
 {
 	static const GLfloat blue[] = { 0.129f, 0.586f, 0.949f, 1.0f };
-	static const GLfloat one = 1.0f;
-
-	glViewport(0, 0, Window.m_config.width, Window.m_config.height);
 	glClearBufferfv(GL_COLOR, 0, blue);
-	glClearBufferfv(GL_DEPTH, 0, &one);
 
 	glUseProgram(Program);
-
-	glUniformMatrix4fv(proj_location, 1, GL_FALSE, proj_matrix);
-
-	for (int i = 0; i < 24; i++)
-	{
-		float f = (float)i + (float)currentTime * 0.3f;
-
-		sfm::mat4f camera = translation(0.0f, 0.0f, -6.0f);
-
-		sfm::mat4f rot1 = rotation(0.0174532925f * ((float)currentTime * 45.0f), 0.0f, 1.0f, 0.0f);
-		sfm::mat4f rot2 = rotation(0.0174532925f * ((float)currentTime * 21.0f), 1.0f, 0.0f, 0.0f);
-
-		float x = sinf(2.1f * f) * 2.0f;
-		float y = cosf(1.7f * f) * 2.0f;
-		float z = sinf(1.3f * f) * cosf(1.5f * f) * 2.0f;
-		sfm::mat4f translate = translation(x, y, z);
-
-		sfm::mat4f mv_matrix = translate * rot2 * rot1 * camera;
-
-		// Set the model-view and projection matrices
-		glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
-
-		// Draw 6 faces of 2 triangles of 3 vertices each = 36 vertices
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-	}
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	SwapBuffers(Window.GetDeviceContext());
 }
@@ -164,6 +99,8 @@ void Renderer::CompileShaders()
 	glShaderSource(vs, 1, &sourceCStr, NULL);
 	glCompileShader(vs);
 
+	PrintShaderLog(vs);
+
 	/*GLuint tcs = glCreateShader(GL_TESS_CONTROL_SHADER);
 	sourceCStr = tcs_source.c_str();
 	glShaderSource(tcs, 1, &sourceCStr, NULL);
@@ -184,6 +121,8 @@ void Renderer::CompileShaders()
 	glShaderSource(fs, 1, &sourceCStr, NULL);
 	glCompileShader(fs);
 
+	PrintShaderLog(fs);
+
 	glAttachShader(Program, vs);
 	/*glAttachShader(m_Program, tcs);
 	glAttachShader(m_Program, tes);
@@ -191,6 +130,9 @@ void Renderer::CompileShaders()
 	glAttachShader(Program, fs);
 
 	glLinkProgram(Program);
+
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
 }
 
 std::string Renderer::ReadFile(const std::string& filepath)
@@ -224,4 +166,35 @@ void Renderer::OnResize(int width, int height)
 {
 	aspect = (float)width / float(height);
 	proj_matrix = perspective(0.873f, aspect, 0.1f, 1000.0f);
+}
+
+void Renderer::PrintShaderLog(GLuint shader)
+{
+	std::string str;
+	GLint len;
+
+	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
+	if (len != 0)
+	{
+		str.resize(len);
+		glGetShaderInfoLog(shader, len, NULL, &str[0]);
+	}
+
+	OutputDebugStringA(str.c_str());
+}
+
+void Renderer::GenerateTexture(float* data, int width, int height)
+{
+	int x, y;
+
+	for (y = 0; y < height; y++)
+	{
+		for (x = 0; x < width; x++)
+		{
+			data[(y * width + x) * 4 + 0] = (float)((x & y) & 0xFF) / 255.0f;
+			data[(y * width + x) * 4 + 1] = (float)((x | y) & 0xFF) / 255.0f;
+			data[(y * width + x) * 4 + 2] = (float)((x ^ y) & 0xFF) / 255.0f;
+			data[(y * width + x) * 4 + 3] = 1.0f;
+		}
+	}
 }

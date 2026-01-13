@@ -77,6 +77,10 @@ extern PFNGLDRAWARRAYSINSTANCEDBASEINSTANCEPROC glDrawArraysInstancedBaseInstanc
 extern PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv;
 extern PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
 
+extern PFNGLGETSHADERIVPROC glGetShaderiv;
+extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
+extern PFNGLTEXSTORAGE2DPROC glTexStorage2D;
+
 static bool LoadModernOpenGL()
 {
 	if (ModernOpenGLLoaded) return true;
@@ -137,6 +141,11 @@ static bool LoadModernOpenGL()
 
 	LOAD_GL_FUNC(glUniformMatrix4fv, PFNGLUNIFORMMATRIX4FVPROC);
 	LOAD_GL_FUNC(glGetUniformLocation, PFNGLGETUNIFORMLOCATIONPROC);
+
+	LOAD_GL_FUNC(glGetShaderiv, PFNGLGETSHADERIVPROC);
+	LOAD_GL_FUNC(glGetShaderInfoLog, PFNGLGETSHADERINFOLOGPROC);
+	LOAD_GL_FUNC(glTexStorage2D, PFNGLTEXSTORAGE2DPROC);
+
 
 	ModernOpenGLLoaded = true;
 	return true;

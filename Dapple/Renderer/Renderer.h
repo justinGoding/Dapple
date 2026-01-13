@@ -17,6 +17,10 @@ private:
 	static std::string ReadFile(const std::string& filepath);
 
 	static void OnResize(int width, int height);
+
+	static void PrintShaderLog(GLuint shader);
+
+	static void GenerateTexture(float* data, int width, int height);
 private:
 	static OpenGLWindow Window;
 
@@ -25,6 +29,8 @@ private:
 	static GLuint buffer;
 	static GLint mv_location;
 	static GLint proj_location;
+
+	static GLuint texture;
 
 	static float aspect;
 	static sfm::mat4f proj_matrix;

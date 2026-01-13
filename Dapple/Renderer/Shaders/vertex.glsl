@@ -1,17 +1,10 @@
 #version 460 core
 
-in vec4 position;
-
-out VS_OUT
-{
-	vec4 color;
-} vs_out;
-
-uniform mat4 mv_matrix;
-uniform mat4 proj_matrix;
-
 void main(void)													
 {																	
-	gl_Position = proj_matrix * mv_matrix * position;
-	vs_out.color = position * 2.0 + vec4(0.5, 0.5, 0.5, 0.0);
+	const vec4 vertices[] = vec4[](vec4( 0.75, -0.75, 0.5, 1.0),
+								   vec4(-0.75, -0.75, 0.5, 1.0),
+								   vec4( 0.75,  0.75, 0.5, 1.0));
+
+	gl_Position = vertices[gl_VertexID];
 }																
