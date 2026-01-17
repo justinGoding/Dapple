@@ -1,9 +1,15 @@
 #pragma once
 
-#include "..\math\VectorMath.h"
-#include "..\math\MatrixMath.h"
+#include "..\math\Math.h"
 #include "OpenGLWindow.h"
+#include "sb7\sb7object.h"
+#include "sb7\sb7ktx.h"
 
+struct Uniforms
+{
+	GLint mv_matrix;
+	GLint proj_matrix;
+};
 
 class Renderer
 {
@@ -17,6 +23,7 @@ private:
 	static std::string ReadFile(const std::string& filepath);
 
 	static void OnResize(int width, int height);
+	static void OnKeyEvent(int key, int action);
 
 	static void PrintShaderLog(GLuint shader);
 
@@ -31,6 +38,13 @@ private:
 	static GLint proj_location;
 
 	static GLuint texture;
+	static GLuint render_prog;
+	static GLuint tex_object[2];
+	static GLuint tex_index;
+
+	static Uniforms uniforms;
+
+	static sb7::object object;
 
 	static float aspect;
 	static sfm::mat4f proj_matrix;

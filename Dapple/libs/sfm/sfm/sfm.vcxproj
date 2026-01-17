@@ -160,6 +160,11 @@
   <ItemGroup>
     <ClCompile Include="include\sfm\vector.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="vec2f.natvis" />
+    <Natvis Include="vec3f.natvis" />
+    <Natvis Include="vec4f.natvis" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

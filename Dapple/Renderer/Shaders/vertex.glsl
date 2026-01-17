@@ -1,10 +1,21 @@
 #version 460 core
 
-void main(void)													
-{																	
-	const vec4 vertices[] = vec4[](vec4( 0.75, -0.75, 0.5, 1.0),
-								   vec4(-0.75, -0.75, 0.5, 1.0),
-								   vec4( 0.75,  0.75, 0.5, 1.0));
+uniform mat4 mv_matrix;
+uniform mat4 proj_matrix;
 
-	gl_Position = vertices[gl_VertexID];
-}																
+layout (location = 0) in vec4 position;
+layout (location = 4) in vec2 tc;
+
+out VS_OUT
+{
+	vec2 tc;
+} vs_out;
+
+void main(void)
+{
+	vec4 pos_vs = mv_matrix * position;
+
+	vs_out.tc = tc;
+
+	gl_Position = proj_matrix * pos_vs;
+}

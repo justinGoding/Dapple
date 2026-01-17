@@ -144,14 +144,18 @@
     <ClCompile Include="math\MatrixMath.cpp" />
     <ClCompile Include="math\VectorMath.cpp" />
     <ClCompile Include="Renderer\OpenGL.cpp" />
+    <ClCompile Include="Renderer\OpenGLShader.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
     <ClCompile Include="Renderer\OpenGLWindow.cpp" />
+    <ClCompile Include="Renderer\sb7\sb7ktx.cpp" />
     <ClCompile Include="Renderer\sb7\sb7object.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h" />
+    <ClInclude Include="math\Math.h" />
     <ClInclude Include="math\MatrixMath.h" />
     <ClInclude Include="math\VectorMath.h" />
+    <ClInclude Include="Renderer\OpenGLShader.h" />
     <ClInclude Include="Renderer\Renderer.h" />
     <ClInclude Include="Renderer\OpenGL.h" />
     <ClInclude Include="Renderer\OpenGLWindow.h" />
@@ -160,11 +164,17 @@
     <ClInclude Include="Renderer\GLHeaders\KHR\khrplatform.h" />
     <ClInclude Include="Renderer\GLHeaders\wgl.h" />
     <ClInclude Include="Renderer\GLHeaders\wglext.h" />
+    <ClInclude Include="Renderer\sb7\sb7ktx.h" />
     <ClInclude Include="Renderer\sb7\sb7object.h" />
     <ClInclude Include="Renderer\sb7\sb6mfile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="vec2f.natvis" />
+    <Natvis Include="vec3f.natvis" />
+    <Natvis Include="vec4f.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -326,6 +326,12 @@ LRESULT OpenGLWindow::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		
 	}
 	break;
+	case WM_KEYDOWN:
+		window->m_KeyEventCallback(wParam, 1);
+		break;
+	case WM_KEYUP:
+		window->m_KeyEventCallback(wParam, 0);
+		break;
 	case WM_CLOSE:
 		PostQuitMessage(0);
 		break;
@@ -428,9 +434,4 @@ void OpenGLWindow::LastWin32Error()
 
 	LocalFree(lpMsgBuf);
 	ExitProcess(dw);
-}
-
-void OpenGLWindow::SetWindowSizeCallback(WindowSizeFunction callback)
-{
-	m_WindowSizeCallback = callback;
 }

@@ -3,6 +3,7 @@
 #include "OpenGL.h"
 
 typedef void (*WindowSizeFunction)(int width, int height);
+typedef void (*KeyEventFunction)(int key, int action);
 
 class OpenGLWindow
 {
@@ -17,7 +18,8 @@ public:
 	HDC GetDeviceContext() { return m_DC; }
 	void Destroy();
 
-	void SetWindowSizeCallback(WindowSizeFunction callback);
+	void SetWindowSizeCallback(WindowSizeFunction callback) { m_WindowSizeCallback = callback; }
+	void SetKeyEventCallback(KeyEventFunction callback) { m_KeyEventCallback = callback; }
 
 private:
 	ATOM RegisterTempClass(HINSTANCE hInstance);
@@ -68,5 +70,6 @@ public:
 
 public:
 	WindowSizeFunction m_WindowSizeCallback = nullptr;
+	KeyEventFunction m_KeyEventCallback = nullptr;
 };
 

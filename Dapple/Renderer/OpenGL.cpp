@@ -65,3 +65,12 @@ PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation = nullptr;
 PFNGLGETSHADERIVPROC glGetShaderiv = nullptr;
 PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog = nullptr;
 PFNGLTEXSTORAGE2DPROC glTexStorage2D = nullptr;
+
+PFNGLDELETESHADERPROC glDeleteShader = nullptr;
+
+PFNGLTEXSTORAGE1DPROC glTexStorage1D = nullptr;
+PFNGLTEXSTORAGE3DPROC glTexStorage3D = nullptr;
+PFNGLTEXSUBIMAGE3DPROC glTexSubImage3D = nullptr;
+PFNGLCOMPRESSEDTEXIMAGE2DPROC glCompressedTexImage2D = nullptr;
+
+PFNGLGENERATEMIPMAPPROC glGenerateMipmap = nullptr;

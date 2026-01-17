@@ -27,6 +27,7 @@
 #include "sb7object.h"
 
 #include <stdio.h>
+#include <errno.h>
 
 namespace sb7
 {
@@ -47,6 +48,15 @@ object::~object()
 void object::load(const char * filename)
 {
     FILE * infile = fopen(filename, "rb");
+    if (!infile)
+    {
+        const char* err = strerror(errno);
+        size_t newsize = strlen(err) + 1;
+        wchar_t* wcstring = new wchar_t[newsize];
+        mbstowcs(wcstring, err, newsize);
+        MessageBoxW(NULL, wcstring, L"Dapple", MB_ICONERROR);
+        return;
+    }
     size_t filesize;
     char * data;
 

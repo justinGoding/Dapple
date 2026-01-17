@@ -36,6 +36,12 @@
     <ClCompile Include="Renderer\sb7\sb7object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer\sb7\sb7ktx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\OpenGLShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer\GLHeaders\glcorearb.h">
@@ -77,8 +83,22 @@
     <ClInclude Include="Renderer\sb7\sb6mfile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer\sb7\sb7ktx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\OpenGLShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="vec2f.natvis" />
+    <Natvis Include="vec3f.natvis" />
+    <Natvis Include="vec4f.natvis" />
   </ItemGroup>
 </Project>
