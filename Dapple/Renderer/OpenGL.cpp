@@ -74,3 +74,5 @@ PFNGLTEXSUBIMAGE3DPROC glTexSubImage3D = nullptr;
 PFNGLCOMPRESSEDTEXIMAGE2DPROC glCompressedTexImage2D = nullptr;
 
 PFNGLGENERATEMIPMAPPROC glGenerateMipmap = nullptr;
+
+PFNGLUNIFORM1FPROC glUniform1f = nullptr;

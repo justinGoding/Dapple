@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
 	<Type Name="sfm::vec3f">
-		<DisplayString>{{m.m128_f32[0]}, {m.m128_f32[1]}, {m.m128_f32[2]}}} </DisplayString>
+		<DisplayString>{{{m.m128_f32[0]}, {m.m128_f32[1]}, {m.m128_f32[2]}}} </DisplayString>
 		<Expand>
 			<Item Name="X">m.m128_f32[0]</Item>
 			<Item Name="Y">m.m128_f32[1]</Item>

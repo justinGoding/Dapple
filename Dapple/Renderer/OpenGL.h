@@ -90,6 +90,8 @@ extern PFNGLCOMPRESSEDTEXIMAGE2DPROC glCompressedTexImage2D;
 
 extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
 
+extern PFNGLUNIFORM1FPROC glUniform1f;
+
 static bool LoadModernOpenGL()
 {
 	if (ModernOpenGLLoaded) return true;
@@ -163,6 +165,8 @@ static bool LoadModernOpenGL()
 	LOAD_GL_FUNC(glCompressedTexImage2D, PFNGLCOMPRESSEDTEXIMAGE2DPROC);
 
 	LOAD_GL_FUNC(glGenerateMipmap, PFNGLGENERATEMIPMAPPROC);
+
+	LOAD_GL_FUNC(glUniform1f, PFNGLUNIFORM1FPROC);
 
 	ModernOpenGLLoaded = true;
 	return true;

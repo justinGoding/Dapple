@@ -7,8 +7,8 @@
 
 struct Uniforms
 {
-	GLint mv_matrix;
-	GLint proj_matrix;
+	GLint mvp;
+	GLint offset;
 };
 
 class Renderer
@@ -31,16 +31,15 @@ private:
 private:
 	static OpenGLWindow Window;
 
-	static GLuint Program;
-	static GLuint vao;
+	static GLuint render_prog;
+	static GLuint render_vao;
 	static GLuint buffer;
 	static GLint mv_location;
 	static GLint proj_location;
 
-	static GLuint texture;
-	static GLuint render_prog;
-	static GLuint tex_object[2];
-	static GLuint tex_index;
+	static GLuint tex_wall;
+	static GLuint tex_ceiling;
+	static GLuint tex_floor;
 
 	static Uniforms uniforms;
 
