@@ -12,10 +12,13 @@ GLuint Renderer::render_vao = 0;
 GLuint Renderer::buffer = 0;
 GLint Renderer::mv_location = 0;
 GLint Renderer::proj_location = 0;
-GLuint Renderer::tex_wall = 0;
 
-GLuint Renderer::tex_ceiling = 0;
-GLuint Renderer::tex_floor = 0;
+GLuint Renderer::tex_alien_array;
+GLuint Renderer::rain_buffer;
+
+float Renderer::droplet_x_offset[256];
+float Renderer::droplet_rot_speed[256];
+float Renderer::droplet_fall_speed[256];
 
 Uniforms Renderer::uniforms;
 
@@ -39,21 +42,24 @@ void Renderer::Init(HINSTANCE hInstance, int nCmdShow)
 	glGenVertexArrays(1, &render_vao);
 	glBindVertexArray(render_vao);
 
-	tex_wall = sb7::ktx::file::load("C:\\dev\\Dapple\\Dapple\\Renderer\\media\\textures\\brick.ktx");
-	tex_ceiling = sb7::ktx::file::load("C:\\dev\\Dapple\\Dapple\\Renderer\\media\\textures\\ceiling.ktx");
-	tex_floor = sb7::ktx::file::load("C:\\dev\\Dapple\\Dapple\\Renderer\\media\\textures\\floor.ktx");
+	tex_alien_array = sb7::ktx::file::load("Renderer/media/textures/aliens.ktx");
+	glBindTexture(GL_TEXTURE_2D_ARRAY, tex_alien_array);
+	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-	int i;
-	GLuint textures[] = { tex_floor, tex_wall, tex_ceiling };
+	glGenBuffers(1, &rain_buffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, rain_buffer);
+	glBufferData(GL_UNIFORM_BUFFER, 256 * sizeof(float) * 4, NULL, GL_DYNAMIC_DRAW);
 
-	for (i = 0; i < 3; i++)
+	for (int i = 0; i < 256; i++)
 	{
-		glBindTexture(GL_TEXTURE_2D, textures[i]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		droplet_x_offset[i] = random_float() * 2.0f - 1.0f;
+		droplet_rot_speed[i] = (random_float() + 0.5f)* ((i & 1) ? -3.0f : 3.0f);
+		droplet_fall_speed[i] = random_float() + 0.2f;
 	}
 
 	glBindVertexArray(render_vao);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Renderer::OnShutdown()
@@ -65,6 +71,8 @@ void Renderer::OnShutdown()
 
 void Renderer::Render(float currentTime)
 {
+	float t = currentTime;
+
 	static const GLfloat black[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	static const GLfloat blue[] = { 0.129f, 0.586f, 0.949f, 1.0f };
 	static const GLfloat ones[] = { 1.0f };
@@ -74,23 +82,22 @@ void Renderer::Render(float currentTime)
 
 	glUseProgram(render_prog);
 
-	sfm::mat4f proj_matrix = perspective(60.0f DEG, (float)Window.m_config.width / (float)Window.m_config.height, 0.1f, 100.0f);
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, rain_buffer);
+	sfm::vec4f* droplet = (sfm::vec4f*)glMapBufferRange(GL_UNIFORM_BUFFER, 0, 256 * sizeof(float) * 4, GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
 
-	glUniform1f(uniforms.offset, currentTime * 0.003f);
-
-	GLuint textures[] = { tex_wall, tex_floor, tex_wall, tex_ceiling };
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 256; i++)
 	{
-		float angle = 90.0f DEG * (float)i;
-		sfm::mat4f mv_matrix = scale(30.0f, 1.0f, 1.0f) *
-			rotation(90.0f DEG, 0.0f, 1.0f, 0.0f) *
-			translation(-0.5f, 0.0f, -10.0f) *
-			rotation(90.0f DEG * (float)i, sfm::vec3f(0.0f, 0.0f, 1.0f));
-		sfm::mat4f mvp = mv_matrix * proj_matrix;
+		droplet[i][0] = droplet_x_offset[i];
+		droplet[i][1] = 2.0f - fmodf((t + float(i)) * droplet_fall_speed[i], 4.31f);
+		droplet[i][2] = t * droplet_rot_speed[i];
+		droplet[i][3] = 0.0f;
+	}
+	glUnmapBuffer(GL_UNIFORM_BUFFER);
 
-		glUniformMatrix4fv(uniforms.mvp, 1, GL_FALSE, mvp);
-
-		glBindTexture(GL_TEXTURE_2D, textures[i]);
+	int alien_index;
+	for (alien_index = 0; alien_index < 256; alien_index++)
+	{
+		glVertexAttribI1i(0, alien_index);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 	}
 
@@ -114,9 +121,6 @@ void Renderer::CompileShaders()
 
 	glDeleteShader(vs);
 	glDeleteShader(fs);
-
-	uniforms.mvp = glGetUniformLocation(render_prog, "mvp");
-	uniforms.offset = glGetUniformLocation(render_prog, "offset");
 }
 
 std::string Renderer::ReadFile(const std::string& filepath)
@@ -158,8 +162,7 @@ void Renderer::OnKeyEvent(int key, int action)
 	{
 		if (key == 0x54)
 		{
-			tex_floor++;
-			if (tex_floor > 1) tex_floor = 0;
+			
 		}
 	}
 }

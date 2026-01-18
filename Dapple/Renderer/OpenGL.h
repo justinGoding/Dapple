@@ -92,6 +92,9 @@ extern PFNGLGENERATEMIPMAPPROC glGenerateMipmap;
 
 extern PFNGLUNIFORM1FPROC glUniform1f;
 
+extern PFNGLBINDBUFFERBASEPROC glBindBufferBase;
+extern PFNGLVERTEXATTRIBI1IPROC glVertexAttribI1i;
+
 static bool LoadModernOpenGL()
 {
 	if (ModernOpenGLLoaded) return true;
@@ -167,6 +170,9 @@ static bool LoadModernOpenGL()
 	LOAD_GL_FUNC(glGenerateMipmap, PFNGLGENERATEMIPMAPPROC);
 
 	LOAD_GL_FUNC(glUniform1f, PFNGLUNIFORM1FPROC);
+
+	LOAD_GL_FUNC(glVertexAttribI1i, PFNGLVERTEXATTRIBI1IPROC);
+	LOAD_GL_FUNC(glBindBufferBase, PFNGLBINDBUFFERBASEPROC);
 
 	ModernOpenGLLoaded = true;
 	return true;

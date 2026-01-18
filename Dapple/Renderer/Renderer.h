@@ -37,9 +37,12 @@ private:
 	static GLint mv_location;
 	static GLint proj_location;
 
-	static GLuint tex_wall;
-	static GLuint tex_ceiling;
-	static GLuint tex_floor;
+	static GLuint tex_alien_array;
+	static GLuint rain_buffer;
+
+	static float droplet_x_offset[256];
+	static float droplet_rot_speed[256];
+	static float droplet_fall_speed[256];
 
 	static Uniforms uniforms;
 

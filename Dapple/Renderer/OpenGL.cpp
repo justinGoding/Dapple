@@ -76,3 +76,6 @@ PFNGLCOMPRESSEDTEXIMAGE2DPROC glCompressedTexImage2D = nullptr;
 PFNGLGENERATEMIPMAPPROC glGenerateMipmap = nullptr;
 
 PFNGLUNIFORM1FPROC glUniform1f = nullptr;
+
+PFNGLBINDBUFFERBASEPROC glBindBufferBase = nullptr;
+PFNGLVERTEXATTRIBI1IPROC glVertexAttribI1i = nullptr;
