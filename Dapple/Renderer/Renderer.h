@@ -1,52 +1,66 @@
 #pragma once
 
 #include "..\math\Math.h"
-#include "OpenGLWindow.h"
+#include "OpenGL\OpenGLWindow.h"
 #include "sb7\sb7object.h"
 #include "sb7\sb7ktx.h"
 
 struct Uniforms
 {
 	GLint mvp;
-	GLint offset;
+};
+
+struct uniforms_block
+{
+	sfm::mat4f mv_matrix;
+	sfm::mat4f view_matrix;
+	sfm::mat4f proj_matrix;
+};
+
+struct Textures
+{
+	GLuint color;
+	GLuint normals;
 };
 
 class Renderer
 {
 public:
-	static void Init(HINSTANCE hInstance, int nCmdShow);
-	static void OnShutdown();
+	Renderer();
 
-	static void Render(float currentTime);
+	void Init(HINSTANCE hInstance, int nCmdShow);
+	void OnShutdown();
+
+	void Render(float currentTime);
 private:
-	static void CompileShaders();
-	static std::string ReadFile(const std::string& filepath);
+	void CompileShaders();
+	std::string ReadFile(const std::string& filepath);
 
 	static void OnResize(int width, int height);
 	static void OnKeyEvent(int key, int action);
 
-	static void PrintShaderLog(GLuint shader);
+	void PrintShaderLog(GLuint shader);
 
-	static void GenerateTexture(float* data, int width, int height);
+	void GenerateTexture(float* data, int width, int height);
 private:
-	static OpenGLWindow Window;
+	OpenGLWindow m_Window;
 
-	static GLuint render_prog;
-	static GLuint render_vao;
-	static GLuint buffer;
-	static GLint mv_location;
-	static GLint proj_location;
+	GLuint m_clear_program;
+	GLuint m_append_program;
+	GLuint m_resolve_program;
 
-	static GLuint tex_alien_array;
-	static GLuint rain_buffer;
+	Textures m_textures;
 
-	static float droplet_x_offset[256];
-	static float droplet_rot_speed[256];
-	static float droplet_fall_speed[256];
+	GLuint m_uniforms_buffer;
 
-	static Uniforms uniforms;
+	Uniforms m_uniforms;
 
-	static sb7::object object;
+	sb7::object m_object;
+
+	GLuint m_fragment_buffer;
+	GLuint m_head_pointer_image;
+	GLuint m_atomic_counter_buffer;
+	GLuint m_dummy_vao;
 
 	static float aspect;
 	static sfm::mat4f proj_matrix;

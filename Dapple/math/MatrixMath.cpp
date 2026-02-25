@@ -130,13 +130,14 @@ sfm::mat4f ortho(float left, float right, float bottom, float top, float near, f
 sfm::mat4f lookat(const sfm::vec3f& eye, const sfm::vec3f& center, const sfm::vec3f& up)
 {
 	sfm::vec3f forward = sfm::normalize(center - eye);
-	sfm::vec3f side = sfm::cross(forward, up);
+	sfm::vec3f upN = sfm::normalize(up);
+	sfm::vec3f side = sfm::cross(forward, upN);
 	sfm::vec3f new_up = sfm::cross(side, forward);
 
-	return sfm::mat4f(
-		side.x(), new_up.x(), forward.x(), -eye.x(),
-		side.y(), new_up.y(), forward.y(), -eye.y(),
-		side.z(), new_up.z(), forward.z(), -eye.z(),
+	return translation(-eye) * sfm::mat4f(
+		side.x(), new_up.x(), -forward.x(), 0,
+		side.y(), new_up.y(), -forward.y(), 0,
+		side.z(), new_up.z(), -forward.z(), 0,
 		0.0f,	  0.0f,		  0.0f,			1.0f
 	);
 }

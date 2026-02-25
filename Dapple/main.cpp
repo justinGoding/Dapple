@@ -1,32 +1,14 @@
-
-#include <chrono>
-
-#include "Core.h"
+#include "core\Application.h"
 #include "Renderer\Renderer.h"
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
-	Renderer::Init(hInstance, nCmdShow);
+	Application app = Application::Get();
+	app.Init(hInstance, nCmdShow);
 
-	auto start = std::chrono::high_resolution_clock::now();
+	int return_msg = app.Run();
 
-	MSG msg;
-	bool running = true;
-	while (running)
-	{
-		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
-			if (msg.message == WM_QUIT)
-			{
-				running = false;
-			}
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-		auto time = std::chrono::high_resolution_clock::now();
-		Renderer::Render(std::chrono::duration<float, std::milli>(time - start).count() / 1000.0f);
-	}
-	Renderer::OnShutdown();
+	app.OnShutdown();
 
-	return msg.wParam;
+	return return_msg;
 }

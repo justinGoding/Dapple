@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\Core.h"
+#include "..\..\core\Core.h"
 
 #include <windows.h>
 #include <gl/gl.h>
@@ -20,7 +20,8 @@ extern PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB;
 extern PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB;
 
 // Loaded by call to LoadModernOpenGL()
-extern PFNGLCREATEPROGRAMPROC glCreateProgram;
+extern PFNGLCREATEPROGRAMPROC _glCreateProgram;
+#define glCreateProgram _glCreateProgram
 extern PFNGLCREATESHADERPROC glCreateShader;
 extern PFNGLSHADERSOURCEPROC glShaderSource;
 extern PFNGLCOMPILESHADERPROC glCompileShader;
@@ -94,6 +95,11 @@ extern PFNGLUNIFORM1FPROC glUniform1f;
 
 extern PFNGLBINDBUFFERBASEPROC glBindBufferBase;
 extern PFNGLVERTEXATTRIBI1IPROC glVertexAttribI1i;
+
+extern PFNGLMEMORYBARRIERPROC glMemoryBarrier;
+extern PFNGLBINDIMAGETEXTUREPROC glBindImageTexture;
+extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
+extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
 
 static bool LoadModernOpenGL()
 {
@@ -173,6 +179,11 @@ static bool LoadModernOpenGL()
 
 	LOAD_GL_FUNC(glVertexAttribI1i, PFNGLVERTEXATTRIBI1IPROC);
 	LOAD_GL_FUNC(glBindBufferBase, PFNGLBINDBUFFERBASEPROC);
+
+	LOAD_GL_FUNC(glMemoryBarrier, PFNGLMEMORYBARRIERPROC);
+	LOAD_GL_FUNC(glBindImageTexture, PFNGLBINDIMAGETEXTUREPROC);
+	LOAD_GL_FUNC(glGetProgramiv, PFNGLGETPROGRAMIVPROC);
+	LOAD_GL_FUNC(glGetProgramInfoLog, PFNGLGETPROGRAMINFOLOGPROC);
 
 	ModernOpenGLLoaded = true;
 	return true;

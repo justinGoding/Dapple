@@ -140,33 +140,42 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="core\Application.cpp" />
+    <ClCompile Include="core\memory\DoubleEndedStackAllocator.cpp" />
+    <ClCompile Include="core\memory\StackAllocator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\MatrixMath.cpp" />
     <ClCompile Include="math\VectorMath.cpp" />
-    <ClCompile Include="Renderer\OpenGL.cpp" />
-    <ClCompile Include="Renderer\OpenGLShader.cpp" />
+    <ClCompile Include="Renderer\openGL\OpenGL.cpp" />
+    <ClCompile Include="Renderer\openGL\OpenGLShader.cpp" />
     <ClCompile Include="Renderer\Renderer.cpp" />
-    <ClCompile Include="Renderer\OpenGLWindow.cpp" />
+    <ClCompile Include="Renderer\openGL\OpenGLWindow.cpp" />
     <ClCompile Include="Renderer\sb7\sb7ktx.cpp" />
     <ClCompile Include="Renderer\sb7\sb7object.cpp" />
+    <ClCompile Include="Renderer\sb7\sb7shader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core.h" />
+    <ClInclude Include="core\Application.h" />
+    <ClInclude Include="core\Core.h" />
+    <ClInclude Include="core\memory\CustomAllocation.h" />
+    <ClInclude Include="core\memory\DoubleEndedStackAllocator.h" />
+    <ClInclude Include="core\memory\StackAllocator.h" />
     <ClInclude Include="math\Math.h" />
     <ClInclude Include="math\MatrixMath.h" />
     <ClInclude Include="math\VectorMath.h" />
-    <ClInclude Include="Renderer\OpenGLShader.h" />
+    <ClInclude Include="Renderer\openGL\OpenGLShader.h" />
     <ClInclude Include="Renderer\Renderer.h" />
-    <ClInclude Include="Renderer\OpenGL.h" />
-    <ClInclude Include="Renderer\OpenGLWindow.h" />
-    <ClInclude Include="Renderer\GLHeaders\glcorearb.h" />
-    <ClInclude Include="Renderer\GLHeaders\glext.h" />
-    <ClInclude Include="Renderer\GLHeaders\KHR\khrplatform.h" />
-    <ClInclude Include="Renderer\GLHeaders\wgl.h" />
-    <ClInclude Include="Renderer\GLHeaders\wglext.h" />
+    <ClInclude Include="Renderer\openGL\OpenGL.h" />
+    <ClInclude Include="Renderer\openGL\OpenGLWindow.h" />
+    <ClInclude Include="Renderer\openGL\GLHeaders\glcorearb.h" />
+    <ClInclude Include="Renderer\openGL\GLHeaders\glext.h" />
+    <ClInclude Include="Renderer\openGL\GLHeaders\KHR\khrplatform.h" />
+    <ClInclude Include="Renderer\openGL\GLHeaders\wgl.h" />
+    <ClInclude Include="Renderer\openGL\GLHeaders\wglext.h" />
     <ClInclude Include="Renderer\sb7\sb7ktx.h" />
     <ClInclude Include="Renderer\sb7\sb7object.h" />
     <ClInclude Include="Renderer\sb7\sb6mfile.h" />
+    <ClInclude Include="Renderer\sb7\shader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

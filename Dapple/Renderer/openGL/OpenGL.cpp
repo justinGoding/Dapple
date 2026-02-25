@@ -79,3 +79,8 @@ PFNGLUNIFORM1FPROC glUniform1f = nullptr;
 
 PFNGLBINDBUFFERBASEPROC glBindBufferBase = nullptr;
 PFNGLVERTEXATTRIBI1IPROC glVertexAttribI1i = nullptr;
+
+PFNGLMEMORYBARRIERPROC glMemoryBarrier = nullptr;
+PFNGLBINDIMAGETEXTUREPROC glBindImageTexture = nullptr;
+PFNGLGETPROGRAMIVPROC glGetProgramiv = nullptr;
+PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog = nullptr;

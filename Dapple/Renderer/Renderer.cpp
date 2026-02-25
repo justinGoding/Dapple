@@ -1,126 +1,156 @@
 #include "Renderer.h"
 
-#include "OpenGLShader.h"
+#include "sb7/shader.h"
+#include "OpenGL\OpenGLShader.h"
 
 #include <cmath>
 #include <fstream>
 
-OpenGLWindow Renderer::Window = OpenGLWindow();
-
-GLuint Renderer::render_prog = 0;
-GLuint Renderer::render_vao = 0;
-GLuint Renderer::buffer = 0;
-GLint Renderer::mv_location = 0;
-GLint Renderer::proj_location = 0;
-
-GLuint Renderer::tex_alien_array;
-GLuint Renderer::rain_buffer;
-
-float Renderer::droplet_x_offset[256];
-float Renderer::droplet_rot_speed[256];
-float Renderer::droplet_fall_speed[256];
-
-Uniforms Renderer::uniforms;
-
-sb7::object Renderer::object = sb7::object();
-
 float Renderer::aspect = 0.0f;
 sfm::mat4f Renderer::proj_matrix;
 
+Renderer::Renderer() 
+{
+	m_Window = OpenGLWindow();
+
+	m_clear_program = 0;
+	m_append_program = 0;
+	m_resolve_program = 0;
+
+	m_object = sb7::object();
+}
+
 void Renderer::Init(HINSTANCE hInstance, int nCmdShow)
 {
-	Window.Init(hInstance);
-	Window.SetWindowSizeCallback(OnResize);
-	Window.SetKeyEventCallback(OnKeyEvent);
-	if (!Window.Create(hInstance, nCmdShow))
+	m_Window.Init(hInstance);
+	m_Window.SetWindowSizeCallback(OnResize);
+	m_Window.SetKeyEventCallback(OnKeyEvent);
+	if (!m_Window.Create(hInstance, nCmdShow))
 	{
 		PostQuitMessage(1);
 	}
 
 	CompileShaders();
 
-	glGenVertexArrays(1, &render_vao);
-	glBindVertexArray(render_vao);
+	glGenBuffers(1, &m_uniforms_buffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, m_uniforms_buffer);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(float) * 4 * 4 * 3, NULL, GL_DYNAMIC_DRAW);
 
-	tex_alien_array = sb7::ktx::file::load("Renderer/media/textures/aliens.ktx");
-	glBindTexture(GL_TEXTURE_2D_ARRAY, tex_alien_array);
-	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	m_object.load("Renderer/media/objects/dragon.sbm");
 
-	glGenBuffers(1, &rain_buffer);
-	glBindBuffer(GL_UNIFORM_BUFFER, rain_buffer);
-	glBufferData(GL_UNIFORM_BUFFER, 256 * sizeof(float) * 4, NULL, GL_DYNAMIC_DRAW);
+	glGenBuffers(1, &m_fragment_buffer);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_fragment_buffer);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, 1024 * 1024 * 16, NULL, GL_DYNAMIC_COPY);
 
-	for (int i = 0; i < 256; i++)
-	{
-		droplet_x_offset[i] = random_float() * 2.0f - 1.0f;
-		droplet_rot_speed[i] = (random_float() + 0.5f)* ((i & 1) ? -3.0f : 3.0f);
-		droplet_fall_speed[i] = random_float() + 0.2f;
-	}
+    glGenBuffers(1, &m_atomic_counter_buffer);
+    glBindBuffer(GL_ATOMIC_COUNTER_BUFFER, m_atomic_counter_buffer);
+    glBufferData(GL_ATOMIC_COUNTER_BUFFER, 4, NULL, GL_DYNAMIC_COPY);
 
-	glBindVertexArray(render_vao);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glGenTextures(1, &m_head_pointer_image);
+    glBindTexture(GL_TEXTURE_2D, m_head_pointer_image);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32UI, 1024, 1024);
+
+    glGenVertexArrays(1, &m_dummy_vao);
+    glBindVertexArray(m_dummy_vao);
 }
 
 void Renderer::OnShutdown()
 {
-	glDeleteProgram(render_prog);
+	glDeleteProgram(m_clear_program);
+	glDeleteProgram(m_append_program);
+	glDeleteProgram(m_resolve_program);
 
-	Window.Destroy();
+	m_Window.Destroy();
 }
 
 void Renderer::Render(float currentTime)
 {
-	float t = currentTime;
+	const float f = currentTime;
 
 	static const GLfloat black[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	static const GLfloat gray[] = { 0.1f, 0.1f, 0.1f, 0.0f };
 	static const GLfloat blue[] = { 0.129f, 0.586f, 0.949f, 1.0f };
 	static const GLfloat ones[] = { 1.0f };
 
-	glViewport(0, 0, Window.m_config.width, Window.m_config.height);
-	glClearBufferfv(GL_COLOR, 0, black);
+	glViewport(0, 0, m_Window.m_config.width, m_Window.m_config.height);
+	//glClearBufferfv(GL_COLOR, 0, black);
 
-	glUseProgram(render_prog);
+	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL_ATOMIC_COUNTER_BARRIER_BIT | GL_SHADER_STORAGE_BARRIER_BIT);
 
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, rain_buffer);
-	sfm::vec4f* droplet = (sfm::vec4f*)glMapBufferRange(GL_UNIFORM_BUFFER, 0, 256 * sizeof(float) * 4, GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+	glUseProgram(m_clear_program);
+	glBindVertexArray(m_dummy_vao);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-	for (int i = 0; i < 256; i++)
-	{
-		droplet[i][0] = droplet_x_offset[i];
-		droplet[i][1] = 2.0f - fmodf((t + float(i)) * droplet_fall_speed[i], 4.31f);
-		droplet[i][2] = t * droplet_rot_speed[i];
-		droplet[i][3] = 0.0f;
-	}
-	glUnmapBuffer(GL_UNIFORM_BUFFER);
+	glUseProgram(m_append_program);
 
-	int alien_index;
-	for (alien_index = 0; alien_index < 256; alien_index++)
-	{
-		glVertexAttribI1i(0, alien_index);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-	}
+	sfm::mat4f model_matrix = scale(7.0f);
+	sfm::vec3f view_position = sfm::vec3f(cosf(f * 0.35f) * 120.0f, cosf(f * 0.4f) * 30.0f, sinf(f * 0.35f) * 120.0f);
+	sfm::mat4f view_matrix = lookat(view_position,
+		sfm::vec3f(0.0f, 30.0f, 0.0f),
+		sfm::vec3f(0.0f, 1.0f, 0.0f));
 
-	SwapBuffers(Window.GetDeviceContext());
+	sfm::mat4f mv_matrix = model_matrix * view_matrix;
+	sfm::mat4f proj_matrix = perspective(50.0f DEG,
+		(float)m_Window.m_config.width / (float)m_Window.m_config.height,
+		0.1f,
+		1000.0f);
+
+	glUniformMatrix4fv(m_uniforms.mvp, 1, GL_FALSE, mv_matrix * proj_matrix);
+
+	static const unsigned int zero = 0;
+	glBindBufferBase(GL_ATOMIC_COUNTER_BUFFER, 0, m_atomic_counter_buffer);
+	glBufferSubData(GL_ATOMIC_COUNTER_BUFFER, 0, sizeof(zero), &zero);
+
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, m_fragment_buffer);
+
+	glBindImageTexture(0, m_head_pointer_image, 0, GL_FALSE, 0, GL_READ_WRITE, GL_R32UI);
+
+	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL_ATOMIC_COUNTER_BARRIER_BIT | GL_SHADER_STORAGE_BARRIER_BIT);
+
+	m_object.render();
+
+	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL_ATOMIC_COUNTER_BARRIER_BIT | GL_SHADER_STORAGE_BARRIER_BIT);
+
+	glUseProgram(m_resolve_program);
+
+	glBindVertexArray(m_dummy_vao);
+
+	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT | GL_ATOMIC_COUNTER_BARRIER_BIT | GL_SHADER_STORAGE_BARRIER_BIT);
+
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+	SwapBuffers(m_Window.GetDeviceContext());
 }
 
 void Renderer::CompileShaders()
 {
-	if (render_prog)
-		glDeleteProgram(render_prog);
+	GLuint  shaders[2];
 
-	GLuint vs, fs;
+	shaders[0] = OpenGLShader::load("Renderer/media/shaders/fragmentlist/clear.vs.glsl", GL_VERTEX_SHADER);
+	shaders[1] = OpenGLShader::load("Renderer/media/shaders/fragmentlist/clear.fs.glsl", GL_FRAGMENT_SHADER);
 
-	vs = OpenGLShader::load("C:\\dev\\Dapple\\Dapple\\Renderer\\Shaders\\vertex.glsl", GL_VERTEX_SHADER);
-	fs = OpenGLShader::load("C:\\dev\\Dapple\\Dapple\\Renderer\\Shaders\\fragment.glsl", GL_FRAGMENT_SHADER);
-	
-	render_prog = glCreateProgram();
-	glAttachShader(render_prog, vs);
-	glAttachShader(render_prog, fs);
-	glLinkProgram(render_prog);
+	if (m_clear_program)
+		glDeleteProgram(m_clear_program);
 
-	glDeleteShader(vs);
-	glDeleteShader(fs);
+	m_clear_program = sb7::program::link_from_shaders(shaders, 2, true);
+
+	shaders[0] = OpenGLShader::load("Renderer/media/shaders/fragmentlist/append.vs.glsl", GL_VERTEX_SHADER);
+	shaders[1] = OpenGLShader::load("Renderer/media/shaders/fragmentlist/append.fs.glsl", GL_FRAGMENT_SHADER);
+
+	if (m_append_program)
+		glDeleteProgram(m_append_program);
+
+	m_append_program = sb7::program::link_from_shaders(shaders, 2, true);
+
+	m_uniforms.mvp = glGetUniformLocation(m_append_program, "mvp");
+
+	shaders[0] = OpenGLShader::load("Renderer/media/shaders/fragmentlist/resolve.vs.glsl", GL_VERTEX_SHADER);
+	shaders[1] = OpenGLShader::load("Renderer/media/shaders/fragmentlist/resolve.fs.glsl", GL_FRAGMENT_SHADER);
+
+	if (m_resolve_program)
+		glDeleteProgram(m_resolve_program);
+
+	m_resolve_program = sb7::program::link_from_shaders(shaders, 2, true);
 }
 
 std::string Renderer::ReadFile(const std::string& filepath)
