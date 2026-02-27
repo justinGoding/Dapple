@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CustomAllocation.h"
+
 #include <cstdint>
 
 class StackAllocator
@@ -14,6 +16,8 @@ public:
 
 	// Constructs a stack allocator with the given total size
 	explicit StackAllocator(uint32_t stackSize_bytes);
+
+	~StackAllocator();
 
 	// Allocates a new block of the given size from stack top
 	void* Alloc(uint32_t size_bytes);

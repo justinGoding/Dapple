@@ -1,5 +1,4 @@
 #include "StackAllocator.h"
-#include "CustomAllocation.h"
 
 typedef uint32_t Marker;
 typedef unsigned char byte;
@@ -9,6 +8,11 @@ StackAllocator::StackAllocator(uint32_t stackSize_bytes)
 {
 	m_Memory = new byte[stackSize_bytes];
 	m_Top = 0;
+}
+
+StackAllocator::~StackAllocator()
+{
+	delete[] m_Memory;
 }
 
 // Allocates a new block of the given size from stack top

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CustomAllocation.h"
+
 #include <cstdint>
 
 class DoubleEndedStackAllocator
@@ -14,6 +16,8 @@ public:
 
 	// Constructs a stack allocator with the given total size
 	explicit DoubleEndedStackAllocator(uint32_t stackSize_bytes);
+
+	~DoubleEndedStackAllocator();
 
 	// Allocates a new block of the given size from stack
 	void* AllocUpper(uint32_t size_bytes);

@@ -54,6 +54,9 @@
     <ClCompile Include="core\memory\DoubleEndedStackAllocator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="core\memory\PoolAllocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer\openGL\GLHeaders\glcorearb.h">
@@ -117,6 +120,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\memory\DoubleEndedStackAllocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\memory\PoolAllocator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\DebugStreamBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,4 @@
 #include "DoubleEndedStackAllocator.h"
-#include "CustomAllocation.h"
 
 typedef uint32_t Marker;
 typedef unsigned char byte;
@@ -11,6 +10,11 @@ DoubleEndedStackAllocator::DoubleEndedStackAllocator(uint32_t stackSize_bytes)
 	m_Size = stackSize_bytes;
 	m_Upper = 0;
 	m_Lower = 0;
+}
+
+DoubleEndedStackAllocator::~DoubleEndedStackAllocator()
+{
+	delete[] m_Memory;
 }
 
 // Allocates a new block of the given size from upper stack
