@@ -42,7 +42,7 @@ void* DoubleEndedStackAllocator::AllocLower(uint32_t size_bytes)
 		m_Lower -= size_bytes;
 		return nullptr;
 	}
-	return &m_Memory[m_Lower];
+	return &m_Memory[m_Lower - size_bytes];
 }
 
 // Returns a marker to the current upper stack

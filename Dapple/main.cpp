@@ -5,7 +5,7 @@
 #include "core\DebugStreamBuffer.h"
 #endif
 #include "core\memory\PoolAllocator.h"
-#include "core\memory\StackAllocator.h"
+#include "core\memory\DoubleEndedStackAllocator.h"
 
 #include <iostream>
 
@@ -38,13 +38,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #ifdef _DEBUG
 	RedirectCoutToDebugger();
 #endif
-	StackAllocator stack = StackAllocator(sizeof(Object) * 3);
+	DoubleEndedStackAllocator stack = DoubleEndedStackAllocator(sizeof(Object) * 3);
 
-	Object* obj1 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
-	Object* obj2 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
-	StackAllocator::Marker marker = stack.GetMarker();
-	Object* obj3 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
-	Object* obj4 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
+	Object* obj1 = reinterpret_cast<Object*>(stack.AllocUpper(sizeof(Object)));
+	Object* obj2 = reinterpret_cast<Object*>(stack.AllocLower(sizeof(Object)));
+	DoubleEndedStackAllocator::Marker marker = stack.GetUpperMarker();
+	Object* obj3 = reinterpret_cast<Object*>(stack.AllocUpper(sizeof(Object)));
+	Object* obj4 = reinterpret_cast<Object*>(stack.AllocLower(sizeof(Object)));
 
 	std::cout << "Address of obj1: " << obj1 << std::endl;
 	std::cout << "Address of obj2: " << obj2 << std::endl;
@@ -52,10 +52,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	std::cout << "Address of obj4: " << obj4 << std::endl;
 	std::cout << std::endl;
 
-	stack.FreeToMarker(marker);
+	stack.FreeUpperToMarker(marker);
 
-	Object* obj5 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
-	Object* obj6 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
+	Object* obj5 = reinterpret_cast<Object*>(stack.AllocUpper(sizeof(Object)));
+	Object* obj6 = reinterpret_cast<Object*>(stack.AllocLower(sizeof(Object)));
 
 	std::cout << "Address of obj1: " << obj1 << std::endl;
 	std::cout << "Address of obj2: " << obj2 << std::endl;
@@ -67,7 +67,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 
 	stack.Clear();
 
-	obj2 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
+	obj2 = reinterpret_cast<Object*>(stack.AllocUpper(sizeof(Object)));
 
 	std::cout << "Address of obj2: " << obj2 << std::endl;
 

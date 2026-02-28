@@ -27,7 +27,7 @@ void* StackAllocator::Alloc(uint32_t size_bytes)
 		m_Top -= size_bytes;
 		return nullptr;
 	}
-	return &m_Memory[m_Top];
+	return &m_Memory[m_Top - size_bytes];
 }
 
 // Returns a marker to the current stack top
