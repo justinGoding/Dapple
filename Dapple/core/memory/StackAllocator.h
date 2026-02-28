@@ -34,4 +34,5 @@ public:
 private:
 	byte* m_Memory;
 	Marker m_Top;
+	size_t m_Size;
 };

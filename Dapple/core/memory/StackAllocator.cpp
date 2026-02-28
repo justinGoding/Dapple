@@ -8,6 +8,7 @@ StackAllocator::StackAllocator(uint32_t stackSize_bytes)
 {
 	m_Memory = new byte[stackSize_bytes];
 	m_Top = 0;
+	m_Size = stackSize_bytes;
 }
 
 StackAllocator::~StackAllocator()
@@ -21,7 +22,7 @@ void* StackAllocator::Alloc(uint32_t size_bytes)
 	// Move the marker up by the size of the allocation
 	m_Top += size_bytes;
 	// Ensure that the allocation does not exceed the allotted memory
-	if (m_Top > sizeof(*m_Memory))
+	if (m_Top > m_Size)
 	{
 		m_Top -= size_bytes;
 		return nullptr;

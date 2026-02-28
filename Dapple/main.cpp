@@ -5,6 +5,7 @@
 #include "core\DebugStreamBuffer.h"
 #endif
 #include "core\memory\PoolAllocator.h"
+#include "core\memory\StackAllocator.h"
 
 #include <iostream>
 
@@ -32,39 +33,45 @@ struct Object
 
 PoolAllocator Object::allocator{ 8 };
 
-int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, int nCmdShow)
 {
 #ifdef _DEBUG
 	RedirectCoutToDebugger();
 #endif
-	// Allocate 10 pointers to our Object instances
-	constexpr int arraySize = 10;
+	StackAllocator stack = StackAllocator(sizeof(Object) * 3);
 
-	Object* objects[arraySize];
+	Object* obj1 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
+	Object* obj2 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
+	StackAllocator::Marker marker = stack.GetMarker();
+	Object* obj3 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
+	Object* obj4 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
 
-	// Two uint64_t, 16 bytes
-	std::cout << "About to allocate " << arraySize << " objects" << std::endl;
-
-	for (int i = 0; i < arraySize; ++i)
-	{
-		objects[i] = new Object();
-		std::cout << "new [" << i << "] = " << objects[i] << std::endl;
-	}
-
+	std::cout << "Address of obj1: " << obj1 << std::endl;
+	std::cout << "Address of obj2: " << obj2 << std::endl;
+	std::cout << "Address of obj3: " << obj3 << std::endl;
+	std::cout << "Address of obj4: " << obj4 << std::endl;
 	std::cout << std::endl;
 
-	// Deallocate all the objects
-	for (int i = arraySize - 1; i >= 0; --i)
-	{
-		std::cout << "delete [" << i << "] = " << objects[i] << std::endl;
-		delete objects[i];
-	}
+	stack.FreeToMarker(marker);
 
+	Object* obj5 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
+	Object* obj6 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
+
+	std::cout << "Address of obj1: " << obj1 << std::endl;
+	std::cout << "Address of obj2: " << obj2 << std::endl;
+	std::cout << "Address of obj3: " << obj3 << std::endl;
+	std::cout << "Address of obj4: " << obj4 << std::endl;
+	std::cout << "Address of obj5: " << obj5 << std::endl;
+	std::cout << "Address of obj6: " << obj6 << std::endl;
 	std::cout << std::endl;
 
-	// New objects reuses previous block
-	objects[0] = new Object();
-	std::cout << "new [0] = " << objects[0] << std::endl << std::endl;
+	stack.Clear();
+
+	obj2 = reinterpret_cast<Object*>(stack.Alloc(sizeof(Object)));
+
+	std::cout << "Address of obj2: " << obj2 << std::endl;
+
+
 
 	/*Application app = Application::Get();
 	app.Init(hInstance, nCmdShow);
