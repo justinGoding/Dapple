@@ -16,10 +16,23 @@ int Application::Run()
 {
 	auto start = std::chrono::high_resolution_clock::now();
 
+	StackAllocator g_singleFrameAllocator = StackAllocator(128);
+	DoubleBufferedAllocator g_doubleBufAllocator = DoubleBufferedAllocator(128);
+
 	MSG msg;
 	bool running = true;
 	while (running)
 	{
+		// Clear the single-frame allocator's buffer every frame
+		g_singleFrameAllocator.Clear();
+
+		// Swap the active and inactive buffers of the double-buffered allocator
+		g_doubleBufAllocator.swapBuffers();
+
+		// Now clear the newly active buffer, leaving last frame's
+		// buffer intact
+		g_doubleBufAllocator.clearCurrentBuffer();
+
 		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			if (msg.message == WM_QUIT)
@@ -29,6 +42,7 @@ int Application::Run()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
+
 		auto time = std::chrono::high_resolution_clock::now();
 		m_Renderer.Render(std::chrono::duration<float, std::milli>(time - start).count() / 1000.0f);
 	}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core.h"
+#include "memory\memory.h"
 #include "..\Renderer\Renderer.h"
 
 class Application

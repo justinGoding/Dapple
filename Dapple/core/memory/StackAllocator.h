@@ -12,6 +12,8 @@ public:
 
 	typedef unsigned char byte;
 
+	StackAllocator() {}
+
 	// Constructs a stack allocator with the given total size
 	explicit StackAllocator(uint32_t stackSize_bytes);
 
@@ -32,7 +34,7 @@ public:
 	void Clear();
 
 private:
-	byte* m_Memory;
-	Marker m_Top;
-	size_t m_Size;
+	byte* m_Memory = nullptr;
+	Marker m_Top = 0;
+	size_t m_Size = 0;
 };
