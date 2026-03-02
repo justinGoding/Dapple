@@ -16,13 +16,17 @@ public:
 	PoolAllocator(size_t chunks_per_block);
 	~PoolAllocator();
 
-	void* allocate(size_t size);
-	void deallocate(void* chunk, size_t size);
+	void* Alloc(size_t size);
+	void* AllocAligned(size_t bytes, size_t align);
+	void Dealloc(void* chunk, size_t size);
+
+	void FreeAlignedPool();
 
 private:
 	size_t m_ChunksPerBlock;
 	Chunk* m_Head = nullptr;
 	std::vector<void*> m_blockAddresses;
 
-	Chunk* AllocateBlock(size_t size);
+	Chunk* AllocateBlock(size_t chunk_size);
+	Chunk* AllocateAlignedBlock(size_t chunk_size, size_t align);
 };

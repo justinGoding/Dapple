@@ -31,6 +31,20 @@ void* DoubleEndedStackAllocator::AllocUpper(uint32_t size_bytes)
 	return &m_Memory[m_Size - m_Upper];
 }
 
+// Aligned allocation function. IMPORTANT: 'align'
+// must be a power of 2 (typically 4, 8, or 16)
+void* DoubleEndedStackAllocator::AllocUpperAligned(size_t bytes, size_t align)
+{
+	// Determine worst case number of bytes needed
+	size_t worst_case_bytes = bytes + align - 1;
+
+	// Allocate unaligned block
+	void* p_raw_mem = AllocUpper(worst_case_bytes);
+
+	// Align the block
+	return mem::alignPointer(p_raw_mem, align);
+}
+
 // Allocates a new block of the given size from lower stack
 void* DoubleEndedStackAllocator::AllocLower(uint32_t size_bytes)
 {
@@ -43,6 +57,20 @@ void* DoubleEndedStackAllocator::AllocLower(uint32_t size_bytes)
 		return nullptr;
 	}
 	return &m_Memory[m_Lower - size_bytes];
+}
+
+// Aligned allocation function. IMPORTANT: 'align'
+// must be a power of 2 (typically 4, 8, or 16)
+void* DoubleEndedStackAllocator::AllocLowerAligned(size_t bytes, size_t align)
+{
+	// Determine worst case number of bytes needed
+	size_t worst_case_bytes = bytes + align - 1;
+
+	// Allocate unaligned block
+	void* p_raw_mem = AllocLower(worst_case_bytes);
+
+	// Align the block
+	return mem::alignPointer(p_raw_mem, align);
 }
 
 // Returns a marker to the current upper stack

@@ -30,6 +30,20 @@ void* StackAllocator::Alloc(uint32_t size_bytes)
 	return &m_Memory[m_Top - size_bytes];
 }
 
+// Aligned allocation function. IMPORTANT: 'align'
+// must be a power of 2 (typically 4, 8, or 16)
+void* StackAllocator::AllocAligned(size_t bytes, size_t align)
+{
+	// Determine worst case number of bytes needed
+	size_t worst_case_bytes = bytes + align - 1;
+
+	// Allocate unaligned block
+	void* p_raw_mem = Alloc(worst_case_bytes);
+
+	// Align the block
+	return mem::alignPointer(p_raw_mem, align);
+}
+
 // Returns a marker to the current stack top
 Marker StackAllocator::GetMarker()
 {

@@ -2,8 +2,6 @@
 
 #include "CustomAllocation.h"
 
-#include <cstdint>
-
 class DoubleEndedStackAllocator
 {
 public:
@@ -21,7 +19,9 @@ public:
 
 	// Allocates a new block of the given size from stack
 	void* AllocUpper(uint32_t size_bytes);
+	void* AllocUpperAligned(size_t bytes, size_t align);
 	void* AllocLower(uint32_t size_bytes);
+	void* AllocLowerAligned(size_t bytes, size_t align);
 
 	// Returns a marker to the current stack top
 	Marker GetUpperMarker();

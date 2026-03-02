@@ -2,8 +2,6 @@
 
 #include "CustomAllocation.h"
 
-#include <cstdint>
-
 class StackAllocator
 {
 public:
@@ -21,6 +19,8 @@ public:
 
 	// Allocates a new block of the given size from stack top
 	void* Alloc(uint32_t size_bytes);
+
+	void* AllocAligned(size_t size_bytes, size_t align);
 
 	// Returns a marker to the current stack top
 	Marker GetMarker();
