@@ -33,7 +33,7 @@
 
 // #include <sb7.h>
 
-#include "../OpenGL.h"
+#include "..\openGL\OpenGL.h"
 
 namespace sb7
 {

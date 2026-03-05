@@ -18,27 +18,27 @@ public:
 	~DoubleEndedStackAllocator();
 
 	// Allocates a new block of the given size from stack
-	void* AllocUpper(uint32_t size_bytes);
-	void* AllocUpperAligned(size_t bytes, size_t align);
-	void* AllocLower(uint32_t size_bytes);
-	void* AllocLowerAligned(size_t bytes, size_t align);
+	void* allocUpper(uint32_t size_bytes);
+	void* allocUpperAligned(size_t bytes, size_t align);
+	void* allocLower(uint32_t size_bytes);
+	void* allocLowerAligned(size_t bytes, size_t align);
 
 	// Returns a marker to the current stack top
-	Marker GetUpperMarker();
-	Marker GetLowerMarker();
+	Marker getUpperMarker();
+	Marker getLowerMarker();
 
 	// Rolls the stack back to a previous marker
-	void FreeUpperToMarker(Marker marker);
-	void FreeLowerToMarker(Marker marker);
+	void freeUpperToMarker(Marker marker);
+	void freeLowerToMarker(Marker marker);
 
 	// Clears the entire stack (rolls the stack back to zero)
-	void Clear();
-	void ClearUpper();
-	void ClearLower();
+	void clear();
+	void clearUpper();
+	void clearLower();
 
 private:
-	byte* m_Memory;
-	uint32_t m_Size;
-	Marker m_Upper;
-	Marker m_Lower;
+	byte* m_memory;
+	uint32_t m_size;
+	Marker m_upper;
+	Marker m_lower;
 };

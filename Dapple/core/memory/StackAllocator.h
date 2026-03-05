@@ -20,21 +20,21 @@ public:
 	~StackAllocator();
 
 	// Allocates a new block of the given size from stack top
-	void* Alloc(uint32_t size_bytes);
+	void* alloc(uint32_t size_bytes);
 
-	void* AllocAligned(size_t size_bytes, size_t align);
+	void* allocAligned(size_t size_bytes, size_t align);
 
 	// Returns a marker to the current stack top
-	Marker GetMarker();
+	Marker getMarker();
 
 	// Rolls the stack back to a previous marker
-	void FreeToMarker(Marker marker);
+	void freeToMarker(Marker marker);
 
 	// Clears the entire stack (rolls the stack back to zero)
-	void Clear();
+	void clear();
 
 private:
-	byte* m_Memory = nullptr;
-	Marker m_Top = 0;
-	size_t m_Size = 0;
+	byte* m_memory = nullptr;
+	Marker m_top = 0;
+	size_t m_size = 0;
 };

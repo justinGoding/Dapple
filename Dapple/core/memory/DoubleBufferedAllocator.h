@@ -19,12 +19,12 @@ public:
 
 	void clearCurrentBuffer()
 	{
-		m_stack[m_curStack].Clear();
+		m_stack[m_curStack].clear();
 	}
 
 	void* alloc(uint32_t nBytes)
 	{
-		return m_stack[m_curStack].Alloc(nBytes);
+		return m_stack[m_curStack].alloc(nBytes);
 	}
 
 private:

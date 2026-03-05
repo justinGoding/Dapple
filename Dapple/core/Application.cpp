@@ -24,7 +24,7 @@ int Application::Run()
 	while (running)
 	{
 		// Clear the single-frame allocator's buffer every frame
-		g_singleFrameAllocator.Clear();
+		g_singleFrameAllocator.clear();
 
 		// Swap the active and inactive buffers of the double-buffered allocator
 		g_doubleBufAllocator.swapBuffers();

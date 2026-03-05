@@ -6,6 +6,7 @@
 #endif
 #include "core\memory\PoolAllocator.h"
 #include "core\memory\StackAllocator.h"
+#include "core\containers\List.h"
 
 #include <iostream>
 
@@ -22,12 +23,12 @@ struct Object
 
 	static void* operator new(size_t size)
 	{
-		return allocator.Alloc(size);
+		return allocator.alloc(size);
 	}
 
 	static void operator delete(void* ptr, size_t size)
 	{
-		return allocator.Dealloc(ptr, size);
+		return allocator.dealloc(ptr, size);
 	}
 };
 
@@ -38,40 +39,30 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #ifdef _DEBUG
 	RedirectCoutToDebugger();
 #endif
-	StackAllocator stack = StackAllocator(sizeof(Object) * 30);
-
-	Object* obj1 = reinterpret_cast<Object*>(stack.AllocAligned(sizeof(Object), 4));
-	Object* obj2 = reinterpret_cast<Object*>(stack.AllocAligned(sizeof(Object), 4));
-	StackAllocator::Marker marker = stack.GetMarker();
-	Object* obj3 = reinterpret_cast<Object*>(stack.AllocAligned(sizeof(Object), 4));
-	Object* obj4 = reinterpret_cast<Object*>(stack.AllocAligned(sizeof(Object), 4));
-
-	std::cout << "Address of obj1: " << obj1 << std::endl;
-	std::cout << "Address of obj2: " << obj2 << std::endl;
-	std::cout << "Address of obj3: " << obj3 << std::endl;
-	std::cout << "Address of obj4: " << obj4 << std::endl;
+	List<int> list = List<int>();
+	list.insert(1);
+	list.insert(2);
+	list.insert(3);
+	list.insert(4);
+	list.insert(5);
+	list.insert(6);
+	list.insert(7);
+	list.insert(8);
+	list.insert(9);
+	
+	for (auto i : list)
+	{
+		std::cout << i << std::endl;
+	}
+	std::cout << std::endl;
+	/*list.print();
 	std::cout << std::endl;
 
-	stack.FreeToMarker(marker);
+	list.removeFront();
+	list.removeFront();
 
-	Object* obj5 = reinterpret_cast<Object*>(stack.AllocAligned(sizeof(Object), 4));
-	Object* obj6 = reinterpret_cast<Object*>(stack.AllocAligned(sizeof(Object), 4));
-
-	std::cout << "Address of obj1: " << obj1 << std::endl;
-	std::cout << "Address of obj2: " << obj2 << std::endl;
-	std::cout << "Address of obj3: " << obj3 << std::endl;
-	std::cout << "Address of obj4: " << obj4 << std::endl;
-	std::cout << "Address of obj5: " << obj5 << std::endl;
-	std::cout << "Address of obj6: " << obj6 << std::endl;
-	std::cout << std::endl;
-
-	stack.Clear();
-
-	obj2 = reinterpret_cast<Object*>(stack.AllocAligned(sizeof(Object), 4));
-
-	std::cout << "Address of obj2: " << obj2 << std::endl;
-
-
+	list.print();
+	std::cout << std::endl;*/
 
 	/*Application app = Application::Get();
 	app.Init(hInstance, nCmdShow);

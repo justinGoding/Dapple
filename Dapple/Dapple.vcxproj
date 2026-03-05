@@ -104,6 +104,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dapple\libs\sfm\sfm\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -126,6 +127,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dapple\libs\sfm\sfm\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="core\Application.cpp" />
+    <ClCompile Include="core\containers\List.cpp" />
     <ClCompile Include="core\memory\DoubleBufferedAllocator.cpp" />
     <ClCompile Include="core\memory\DoubleEndedStackAllocator.cpp" />
     <ClCompile Include="core\memory\PoolAllocator.cpp" />
@@ -158,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\Application.h" />
+    <ClInclude Include="core\containers\List.h" />
     <ClInclude Include="core\Core.h" />
     <ClInclude Include="core\DebugStreamBuffer.h" />
     <ClInclude Include="core\memory\CustomAllocation.h" />

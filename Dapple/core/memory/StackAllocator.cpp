@@ -6,58 +6,58 @@ typedef unsigned char byte;
 // Constructs a stack allocator with the given total size
 StackAllocator::StackAllocator(uint32_t stackSize_bytes)
 {
-	m_Memory = new byte[stackSize_bytes];
-	m_Top = 0;
-	m_Size = stackSize_bytes;
+	m_memory = new byte[stackSize_bytes];
+	m_top = 0;
+	m_size = stackSize_bytes;
 }
 
 StackAllocator::~StackAllocator()
 {
-	delete[] m_Memory;
+	delete[] m_memory;
 }
 
 // Allocates a new block of the given size from stack top
-void* StackAllocator::Alloc(uint32_t size_bytes)
+void* StackAllocator::alloc(uint32_t size_bytes)
 {
 	// Move the marker up by the size of the allocation
-	m_Top += size_bytes;
+	m_top += size_bytes;
 	// Ensure that the allocation does not exceed the allotted memory
-	if (m_Top > m_Size)
+	if (m_top > m_size)
 	{
-		m_Top -= size_bytes;
+		m_top -= size_bytes;
 		return nullptr;
 	}
-	return &m_Memory[m_Top - size_bytes];
+	return &m_memory[m_top - size_bytes];
 }
 
 // Aligned allocation function. IMPORTANT: 'align'
 // must be a power of 2 (typically 4, 8, or 16)
-void* StackAllocator::AllocAligned(size_t bytes, size_t align)
+void* StackAllocator::allocAligned(size_t bytes, size_t align)
 {
 	// Determine worst case number of bytes needed
 	size_t worst_case_bytes = bytes + align - 1;
 
 	// Allocate unaligned block
-	void* p_raw_mem = Alloc(worst_case_bytes);
+	void* p_raw_mem = alloc(worst_case_bytes);
 
 	// Align the block
 	return mem::alignPointer(p_raw_mem, align);
 }
 
 // Returns a marker to the current stack top
-Marker StackAllocator::GetMarker()
+Marker StackAllocator::getMarker()
 {
-	return m_Top;
+	return m_top;
 }
 
 // Rolls the stack back to a previous marker
-void StackAllocator::FreeToMarker(Marker marker)
+void StackAllocator::freeToMarker(Marker marker)
 {
-	m_Top = marker;
+	m_top = marker;
 }
 
 // Clears the entire stack (rolls the stack back to zero)
-void StackAllocator::Clear()
+void StackAllocator::clear()
 {
-	m_Top = 0;
+	m_top = 0;
 }
