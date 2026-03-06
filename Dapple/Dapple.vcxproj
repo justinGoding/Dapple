@@ -143,7 +143,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="core\Application.cpp" />
-    <ClCompile Include="core\containers\List.cpp" />
     <ClCompile Include="core\memory\DoubleBufferedAllocator.cpp" />
     <ClCompile Include="core\memory\DoubleEndedStackAllocator.cpp" />
     <ClCompile Include="core\memory\PoolAllocator.cpp" />
@@ -162,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="core\Application.h" />
     <ClInclude Include="core\containers\List.h" />
+    <ClInclude Include="core\containers\Vector.h" />
     <ClInclude Include="core\Core.h" />
     <ClInclude Include="core\DebugStreamBuffer.h" />
     <ClInclude Include="core\memory\CustomAllocation.h" />

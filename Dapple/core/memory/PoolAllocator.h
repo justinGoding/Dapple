@@ -2,7 +2,7 @@
 
 #include "CustomAllocation.h"
 
-#include <vector>
+#include "..\containers\Vector.h"
 
 // A single element of memory in the pool
 struct Chunk
@@ -26,7 +26,7 @@ public:
 private:
 	size_t m_chunksPerBlock;
 	Chunk* m_head = nullptr;
-	std::vector<void*> m_blockAddresses;
+	Vector<void*> m_blockAddresses;
 
 	Chunk* allocateBlock(size_t chunk_size);
 	Chunk* allocateAlignedBlock(size_t chunk_size, size_t align);

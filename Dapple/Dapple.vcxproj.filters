@@ -60,9 +60,6 @@
     <ClCompile Include="core\memory\DoubleBufferedAllocator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\containers\List.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer\openGL\GLHeaders\glcorearb.h">
@@ -141,6 +138,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\containers\List.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\containers\Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

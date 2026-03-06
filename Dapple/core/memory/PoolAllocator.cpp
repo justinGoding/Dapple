@@ -91,7 +91,7 @@ Chunk* PoolAllocator::allocateBlock(size_t chunk_size)
 	// The first chunk of the new block
 	void* block_begin = malloc(block_size);
 	Chunk* first_chunk = reinterpret_cast<Chunk*>(block_begin);
-	m_blockAddresses.push_back(block_begin);
+	m_blockAddresses.pushBack(block_begin);
 
 	// Once the block is allocated, we need to chain all
 	// the chunks in this block
@@ -118,7 +118,7 @@ Chunk* PoolAllocator::allocateAlignedBlock(size_t chunk_size, size_t align)
 	// The first chunk of the new block
 	void* block_begin = mem::allocAligned(block_size, align);
 	Chunk* first_chunk = reinterpret_cast<Chunk*>(block_begin);
-	m_blockAddresses.push_back(block_begin);
+	m_blockAddresses.pushBack(block_begin);
 
 	// Once the block is allocated, we need to chain all
 	// the chunks in this block
