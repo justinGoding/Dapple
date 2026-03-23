@@ -57,7 +57,7 @@ public:
 
 	struct Monitor
 	{
-		std::string name;
+		uint64_t name;
 		void* userPointer;
 
 		// Physical dimensions in millimeters

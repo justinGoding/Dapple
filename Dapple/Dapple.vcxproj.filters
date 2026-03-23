@@ -18,13 +18,13 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\openGL\OpenGLWindow.cpp">
+    <ClCompile Include="renderer\openGL\OpenGLWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Renderer.cpp">
+    <ClCompile Include="renderer\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\openGL\OpenGL.cpp">
+    <ClCompile Include="renderer\openGL\OpenGL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="math\VectorMath.cpp">
@@ -33,19 +33,19 @@
     <ClCompile Include="math\MatrixMath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\sb7\sb7object.cpp">
+    <ClCompile Include="renderer\sb7\sb7object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\sb7\sb7ktx.cpp">
+    <ClCompile Include="renderer\sb7\sb7ktx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\openGL\OpenGLShader.cpp">
+    <ClCompile Include="renderer\openGL\OpenGLShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\sb7\sb7shader.cpp">
+    <ClCompile Include="renderer\sb7\sb7shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\Application.cpp">
+    <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\memory\StackAllocator.cpp">
@@ -57,36 +57,30 @@
     <ClCompile Include="core\memory\PoolAllocator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\memory\DoubleBufferedAllocator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Renderer\openGL\GLHeaders\glcorearb.h">
+    <ClInclude Include="renderer\openGL\GLHeaders\glcorearb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\openGL\GLHeaders\glext.h">
+    <ClInclude Include="renderer\openGL\GLHeaders\glext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\openGL\GLHeaders\wgl.h">
+    <ClInclude Include="renderer\openGL\GLHeaders\wgl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\openGL\GLHeaders\wglext.h">
+    <ClInclude Include="renderer\openGL\GLHeaders\wglext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\openGL\GLHeaders\KHR\khrplatform.h">
+    <ClInclude Include="renderer\openGL\GLHeaders\KHR\khrplatform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\openGL\OpenGLWindow.h">
+    <ClInclude Include="renderer\openGL\OpenGLWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\Core.h">
+    <ClInclude Include="renderer\openGL\OpenGL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\openGL\OpenGL.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer\Renderer.h">
+    <ClInclude Include="renderer\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="math\VectorMath.h">
@@ -95,25 +89,25 @@
     <ClInclude Include="math\MatrixMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\sb7\sb7object.h">
+    <ClInclude Include="renderer\sb7\sb7object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\sb7\sb6mfile.h">
+    <ClInclude Include="renderer\sb7\sb6mfile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\sb7\sb7ktx.h">
+    <ClInclude Include="renderer\sb7\sb7ktx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\openGL\OpenGLShader.h">
+    <ClInclude Include="renderer\openGL\OpenGLShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="math\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\sb7\shader.h">
+    <ClInclude Include="renderer\sb7\shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\Application.h">
+    <ClInclude Include="Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\memory\StackAllocator.h">
@@ -134,13 +128,28 @@
     <ClInclude Include="core\memory\DoubleBufferedAllocator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\memory\memory.h">
+    <ClInclude Include="core\memory\Memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\containers\List.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\containers\Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\containers\HashMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\xxh64.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\Core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\containers\Containers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\containers\String.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

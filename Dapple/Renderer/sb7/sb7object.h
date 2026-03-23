@@ -31,7 +31,7 @@
 
 #ifndef SB6M_FILETYPES_ONLY
 
-#include "..\OpenGL\OpenGL.h"
+#include "..\openGL\OpenGL.h"
 
 namespace sb7
 {

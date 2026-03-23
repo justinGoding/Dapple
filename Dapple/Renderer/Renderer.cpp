@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
-#include "sb7/shader.h"
-#include "OpenGL\OpenGLShader.h"
+#include "sb7\shader.h"
+#include "openGL\OpenGLShader.h"
 
 #include <cmath>
 #include <fstream>

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Core.h"
-#include "memory\memory.h"
-#include "..\Renderer\Renderer.h"
+#include "core\Core.h"
+//#include "renderer\Renderer.h"
 
 class Application
 {
@@ -11,7 +10,7 @@ private:
 
 public:
 	void Init(HINSTANCE hInstance, int nCmdShow);
-	int Run();
+	WPARAM Run();
 	void Render(float currentTime);
 	void OnShutdown();
 
@@ -23,5 +22,5 @@ public:
 	}
 
 private:
-	Renderer m_Renderer;
+	//Renderer m_Renderer;
 };

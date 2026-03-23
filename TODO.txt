@@ -1,0 +1,2 @@
+- Replace custom allignements with alignas/alignof as appropriate
+- Test std::hash speed, determine need for custom hashing function

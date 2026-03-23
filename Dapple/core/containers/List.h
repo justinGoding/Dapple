@@ -2,6 +2,7 @@
 
 #include "..\memory\PoolAllocator.h"
 
+#include <iostream>
 #include <cstddef>
 #include <iterator>
 
