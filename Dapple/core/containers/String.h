@@ -3,9 +3,9 @@
 #include "..\xxh64.h"
 
 #ifdef _DEBUG
-	#define SID(str) (StringID(str, str_sid))
+#define SID(str) (StringID(str, str_sid))
 #elif
-	#define SID(str) (StringID(str_sid))
+#define SID(str) (StringID(str_sid))
 #endif
 
 inline uint64_t operator"" _sid(const char* s, size_t len)

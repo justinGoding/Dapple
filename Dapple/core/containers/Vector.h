@@ -78,7 +78,7 @@ public:
 					m_capacity = rhs.m_capacity;
 					m_elements = _alloc_buffer(m_capacity * sizeof(T));
 				}
-				catch (const std::bad_alloc &)
+				catch (const std::bad_alloc&)
 				{
 					m_elements = nullptr;
 					m_capacity = 0;
@@ -363,10 +363,10 @@ public:
 				for (int i = m_size - 1; i > index; i--)
 				{
 					m_elements[i] = std::move(m_elements[i - 1]);	// Assumes T is move-assignable
-																	// And m_elements[i] is already a valid object
-																	// This part is simpler if m_elements[i] is destructed
-																	// and then move-constructed
-																	// For now, direct move assignment
+					// And m_elements[i] is already a valid object
+					// This part is simpler if m_elements[i] is destructed
+					// and then move-constructed
+					// For now, direct move assignment
 				}
 				// Construct the new value at index using placement new
 				// If m_elements[index] was already a valid object, it needs destructed first

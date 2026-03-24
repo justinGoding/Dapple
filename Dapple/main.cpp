@@ -1,8 +1,16 @@
-//#include "core\Application.h"
-#include "core\memory\PoolAllocator.h"
+#include "core\Application.h"
+
+#ifdef _DEBUG
 #include "core\DebugStreamBuffer.h"
+#endif
+
+#include "core\memory\PoolAllocator.h"
+#include "core\memory\StackAllocator.h"
+#include "core\containers\List.h"
 #include "core\containers\HashMap.h"
 #include "core\containers\String.h"
+
+#include <iostream>
 
 // The Object structure uses custom allocator
 // overloading 'new' and 'delete' operators
@@ -42,7 +50,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	map.insert("on"_sid, 6);
 	map.insert("my"_sid, 7);
 	map.insert("bike"_sid, 8);
-	
+
 	map.at("Wait"_sid);
 	map.at("until"_sid);
 	map.at("you"_sid);
@@ -50,15 +58,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	map.at("me"_sid);
 	map.at("on"_sid);
 	map.at("my"_sid);
-	
+
 	Vector<std::pair<uint64_t, int>> contents = map.contents();
 
-	for (auto [k,v] : contents)
+	for (auto [k, v] : contents)
 	{
 		std::cout << k << ": " << v << std::endl;
 	}
 
 	std::cout << std::endl;
+
+
 	/*list.print();
 	std::cout << std::endl;
 
@@ -68,12 +78,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	list.print();
 	std::cout << std::endl;*/
 
-	/*Application app = Application::Get();
-	app.Init(hInstance, nCmdShow);
+	//Application app = Application::Get();
+	//app.Init(hInstance, nCmdShow);
 
-	int return_msg = app.Run();
+	//int return_msg = app.Run();
 
-	app.OnShutdown();
+	//app.OnShutdown();
 
-	return return_msg;*/
+	//return return_msg;
 }

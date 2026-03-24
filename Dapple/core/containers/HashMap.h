@@ -19,7 +19,7 @@ private:
 			if (this == &rhs)
 				return *this;
 
-			this->kv= rhs.kv;
+			this->kv = rhs.kv;
 			this->psl = rhs.psl;
 			return *this;
 		}
@@ -34,7 +34,7 @@ private:
 	};
 
 public:
-	HashMap(int capacity = 8) : m_capacity(capacity), m_size(0) 
+	HashMap(int capacity = 8) : m_capacity(capacity), m_size(0)
 	{
 		m_table = Vector<Entry>(m_capacity, Entry());
 	}
@@ -52,7 +52,7 @@ public:
 			// Robin hood probe
 			if (new_entry.psl > m_table[index].psl)
 			{
-				m_maxPSL = std::max(new_entry.psl, m_maxPSL);
+				m_maxPSL = (std::max)(new_entry.psl, m_maxPSL);
 				_swap_entries(new_entry, m_table[index]);
 			}
 
@@ -64,7 +64,7 @@ public:
 		{
 			m_table[index].kv = new_entry.kv;
 			m_table[index].psl = new_entry.psl;
-			m_maxPSL = std::max(new_entry.psl, m_maxPSL);
+			m_maxPSL = (std::max)(new_entry.psl, m_maxPSL);
 			m_size++;
 		}
 		else
@@ -145,7 +145,7 @@ public:
 
 
 	// TODO: ensure these are using move returns
-	Vector<K> keys() 
+	Vector<K> keys()
 	{
 		Vector<K> keys = Vector<K>();
 		keys.reserve(m_size);
@@ -157,7 +157,7 @@ public:
 		return keys;
 	}
 
-	Vector<std::pair<K, V>> contents() 
+	Vector<std::pair<K, V>> contents()
 	{
 		Vector<std::pair<K, V>> pairs = Vector<std::pair<K, V>>();
 		pairs.reserve(m_size);

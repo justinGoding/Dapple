@@ -2,6 +2,8 @@
 
 #include "OpenGL.h"
 
+#include <string>
+
 typedef void (*WindowSizeFunction)(int width, int height);
 typedef void (*KeyEventFunction)(int key, int action);
 
