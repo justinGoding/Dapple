@@ -2,6 +2,8 @@
 
 #include "OpenGL.h"
 
+#include <string>
+
 class OpenGLShader
 {
 public:

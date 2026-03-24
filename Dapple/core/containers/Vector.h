@@ -1,3 +1,7 @@
+/*
+* https://github.com/alessandrobelli/MyVectorCpp/blob/main/Vector.hpp
+*/
+
 #pragma once
 
 #include <type_traits>
@@ -13,22 +17,24 @@ public:
 	{
 		m_size = 0;
 		m_capacity = DEFAULT_VECTOR_CAPACITY;
-		m_elements = static_cast<T*>(::operator new[](m_capacity * sizeof(T)));
+		m_alignment = 0;
+		m_elements = _alloc_buffer(m_capacity * sizeof(T));
 	}
 
-	Vector(int n, const T& value)
+	Vector(int n, const T& value, size_t alignment = 0)
 	{
 		// Initialize members to a safe default before attempting allocation
 		m_elements = nullptr;
 		m_size = 0;
 		m_capacity = 0;
+		m_alignment = alignment;
 
 		if (n == 0)
 		{
 			m_capacity = DEFAULT_VECTOR_CAPACITY;
 			if (m_capacity > 0)
 			{
-				m_elements = static_cast<T*>(::operator new[](m_capacity * sizeof(T)));
+				m_elements = _alloc_buffer(m_capacity * sizeof(T));
 				// No elements to construct, size remains 0
 			}
 			return;
@@ -36,7 +42,7 @@ public:
 
 		// n > 0 - allocate raw memory
 		m_capacity = n * 2;
-		m_elements = static_cast<T*>(::operator new[](m_capacity * sizeof(T)));
+		m_elements = _alloc_buffer(m_capacity * sizeof(T));
 
 		try
 		{
@@ -60,6 +66,7 @@ public:
 		m_elements = nullptr;
 		m_size = 0;
 		m_capacity = 0;
+		m_alignment = rhs.m_alignment;
 
 		if (rhs.m_size == 0)
 		{
@@ -69,9 +76,9 @@ public:
 				try
 				{
 					m_capacity = rhs.m_capacity;
-					m_elements = static_cast<T*>(::operator new[](m_capacity * sizeof(T)));
+					m_elements = _alloc_buffer(m_capacity * sizeof(T));
 				}
-				catch (const std::bad_alloc &)
+				catch (const std::bad_alloc&)
 				{
 					m_elements = nullptr;
 					m_capacity = 0;
@@ -92,7 +99,7 @@ public:
 		T* temp_elements = nullptr;
 		try
 		{
-			temp_elements = static_cast<T*>(::operator new[](target_capacity * sizeof(T)));
+			temp_elements = _alloc_buffer(target_capacity * sizeof(T));
 
 			// Call helper, it handles its own partial construction cleanup and re-throws
 			_construct_copy_from_range(temp_elements, rhs.m_elements, rhs.m_size);
@@ -212,7 +219,7 @@ public:
 			return;
 		}
 
-		T* temp_elements = static_cast<T*>(::operator new[](m_size * sizeof(T)));
+		T* temp_elements = _alloc_buffer(m_size * sizeof(T));
 
 		try
 		{
@@ -313,7 +320,7 @@ public:
 			if (new_capacity == 0)
 				new_capacity = 1;
 
-			T* temp_elements = static_cast<T*>(::operator new[](new_capacity * sizeof(T)));
+			T* temp_elements = _alloc_buffer(new_capacity * sizeof(T));
 			int constructed_in_new = 0;
 			try
 			{
@@ -356,10 +363,10 @@ public:
 				for (int i = m_size - 1; i > index; i--)
 				{
 					m_elements[i] = std::move(m_elements[i - 1]);	// Assumes T is move-assignable
-																	// And m_elements[i] is already a valid object
-																	// This part is simpler if m_elements[i] is destructed
-																	// and then move-constructed
-																	// For now, direct move assignment
+					// And m_elements[i] is already a valid object
+					// This part is simpler if m_elements[i] is destructed
+					// and then move-constructed
+					// For now, direct move assignment
 				}
 				// Construct the new value at index using placement new
 				// If m_elements[index] was already a valid object, it needs destructed first
@@ -394,7 +401,7 @@ public:
 			if (new_capacity == 0)
 				new_capacity = 1;
 
-			T* temp_elements = static_cast<T*>(::operator new[](new_capacity * sizeof(T)));
+			T* temp_elements = _alloc_buffer(new_capacity * sizeof(T));
 			int constructed_in_new = 0;
 			try
 			{
@@ -474,7 +481,7 @@ public:
 			return;
 		}
 
-		T* temp_elements = static_cast<T*>(::operator new[](new_capacity_arg * sizeof(T)));
+		T* temp_elements = _alloc_buffer(new_capacity_arg * sizeof(T));
 
 		if (m_elements != nullptr)
 		{
@@ -609,8 +616,18 @@ private:
 		}
 	}
 
+	T* _alloc_buffer(size_t size)
+	{
+		if (m_alignment > 0)
+		{
+			return static_cast<T*>(::operator new[](size, std::align_val_t(m_alignment)));
+		}
+		return static_cast<T*>(::operator new[](size));
+	}
+
 private:
 	size_t m_size;
 	T* m_elements;
 	size_t m_capacity;
+	size_t m_alignment = 0;
 };

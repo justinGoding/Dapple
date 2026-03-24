@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include "memory\DoubleBufferedAllocator.h"
+
 #include <chrono>
 
 Application::Application() 
@@ -12,7 +14,7 @@ void Application::Init(HINSTANCE hInstance, int nCmdShow)
 	m_Renderer.Init(hInstance, nCmdShow);
 }
 
-int Application::Run() 
+WPARAM Application::Run() 
 {
 	auto start = std::chrono::high_resolution_clock::now();
 

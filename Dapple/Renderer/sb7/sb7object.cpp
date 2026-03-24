@@ -28,6 +28,7 @@
 
 #include <stdio.h>
 #include <errno.h>
+#include <string>
 
 namespace sb7
 {

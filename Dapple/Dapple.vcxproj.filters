@@ -57,9 +57,6 @@
     <ClCompile Include="core\memory\PoolAllocator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="core\memory\DoubleBufferedAllocator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Renderer\openGL\GLHeaders\glcorearb.h">
@@ -134,13 +131,19 @@
     <ClInclude Include="core\memory\DoubleBufferedAllocator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\memory\memory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="core\containers\List.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\containers\Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\containers\HashMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\containers\String.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\xxh64.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

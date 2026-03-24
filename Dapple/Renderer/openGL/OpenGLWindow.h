@@ -2,6 +2,8 @@
 
 #include "OpenGL.h"
 
+#include <string>
+
 typedef void (*WindowSizeFunction)(int width, int height);
 typedef void (*KeyEventFunction)(int key, int action);
 
@@ -57,7 +59,7 @@ public:
 
 	struct Monitor
 	{
-		std::string name;
+		uint64_t name;
 		void* userPointer;
 
 		// Physical dimensions in millimeters
