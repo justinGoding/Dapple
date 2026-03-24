@@ -193,7 +193,6 @@
     <ClInclude Include="core\memory\DoubleEndedStackAllocator.h" />
     <ClInclude Include="core\memory\PoolAllocator.h" />
     <ClInclude Include="core\memory\StackAllocator.h" />
-    <ClInclude Include="core\xxh64.h" />
     <ClInclude Include="math\Math.h" />
     <ClInclude Include="math\MatrixMath.h" />
     <ClInclude Include="math\VectorMath.h" />
