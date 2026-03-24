@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core\Core.h"
-//#include "renderer\Renderer.h"
+#include "Core.h"
+#include "..\renderer\Renderer.h"
 
 class Application
 {
@@ -22,5 +22,5 @@ public:
 	}
 
 private:
-	//Renderer m_Renderer;
+	Renderer m_Renderer;
 };

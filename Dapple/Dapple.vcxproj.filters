@@ -45,7 +45,7 @@
     <ClCompile Include="renderer\sb7\sb7shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
+    <ClCompile Include="core\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\memory\StackAllocator.cpp">
@@ -107,7 +107,7 @@
     <ClInclude Include="renderer\sb7\shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h">
+    <ClInclude Include="core\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\memory\StackAllocator.h">
@@ -128,9 +128,6 @@
     <ClInclude Include="core\memory\DoubleBufferedAllocator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="core\memory\Memory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="core\containers\List.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -144,9 +141,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="core\containers\Containers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\containers\String.h">

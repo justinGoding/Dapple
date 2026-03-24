@@ -1,4 +1,8 @@
-#include "Application.h"
+//#include "core\Application.h"
+#include "core\memory\PoolAllocator.h"
+#include "core\DebugStreamBuffer.h"
+#include "core\containers\HashMap.h"
+#include "core\containers\String.h"
 
 // The Object structure uses custom allocator
 // overloading 'new' and 'delete' operators

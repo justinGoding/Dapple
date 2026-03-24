@@ -162,7 +162,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="core\Application.cpp" />
     <ClCompile Include="core\memory\DoubleEndedStackAllocator.cpp" />
     <ClCompile Include="core\memory\PoolAllocator.cpp" />
     <ClCompile Include="core\memory\StackAllocator.cpp" />
@@ -178,8 +178,7 @@
     <ClCompile Include="renderer\sb7\sb7shader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="core\containers\Containers.h" />
+    <ClInclude Include="core\Application.h" />
     <ClInclude Include="core\containers\HashMap.h" />
     <ClInclude Include="core\containers\List.h" />
     <ClInclude Include="core\containers\String.h" />
@@ -190,7 +189,6 @@
     <ClInclude Include="core\memory\CustomAllocation.h" />
     <ClInclude Include="core\memory\DoubleBufferedAllocator.h" />
     <ClInclude Include="core\memory\DoubleEndedStackAllocator.h" />
-    <ClInclude Include="core\memory\Memory.h" />
     <ClInclude Include="core\memory\PoolAllocator.h" />
     <ClInclude Include="core\memory\StackAllocator.h" />
     <ClInclude Include="math\Math.h" />
