@@ -41,17 +41,17 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 #ifdef _DEBUG
 	RedirectCoutToDebugger();
 #endif
-	HashMap<uint64_t, int> map = HashMap<uint64_t, int>();
-	map.insert("Wait"_sid, 1);
-	map.insert("until"_sid, 2);
-	map.insert("you"_sid, 3);
-	map.insert("see"_sid, 4);
-	map.insert("me"_sid, 5);
-	map.insert("on"_sid, 6);
-	map.insert("my"_sid, 7);
-	map.insert("bike"_sid, 8);
+	HashMap<sid, StringID> map = HashMap<sid, StringID>();
+	map.insert("wait"_sid, SID("wait"));
+	map.insert("until"_sid, SID("until"));
+	map.insert("you"_sid, SID("you"));
+	map.insert("see"_sid, SID("see"));
+	map.insert("me"_sid, SID("me"));
+	map.insert("on"_sid, SID("on"));
+	map.insert("my"_sid, SID("my"));
+	map.insert("bik"_sid, SID("bike"));
 
-	map.at("Wait"_sid);
+	map.at("wait"_sid);
 	map.at("until"_sid);
 	map.at("you"_sid);
 	map.at("see"_sid);
@@ -59,7 +59,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	map.at("on"_sid);
 	map.at("my"_sid);
 
-	Vector<std::pair<uint64_t, int>> contents = map.contents();
+	Vector<std::pair<sid, StringID>> contents = map.contents();
 
 	for (auto [k, v] : contents)
 	{
