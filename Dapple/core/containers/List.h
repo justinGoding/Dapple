@@ -1,11 +1,10 @@
 #pragma once
 
-#include "..\memory\PoolAllocator.h"
-
 #include <iostream>
 #include <cstddef>
 #include <iterator>
-#include <iostream>
+
+#include "..\memory\PoolAllocator.h"
 
 // IMPORTANT: sizeof(T) must be >= sizeof(void*)
 

@@ -1,11 +1,12 @@
 #pragma once
 
+#include <string>
+
 #include "..\math\Math.h"
 #include "openGL\OpenGLWindow.h"
 #include "sb7\sb7object.h"
 #include "sb7\sb7ktx.h"
 
-#include <string>
 
 struct Uniforms
 {

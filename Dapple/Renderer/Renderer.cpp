@@ -1,10 +1,11 @@
 #include "Renderer.h"
 
+#include <fstream>
+#include <cmath>
+
 #include "sb7\shader.h"
 #include "openGL\OpenGLShader.h"
 
-#include <cmath>
-#include <fstream>
 
 float Renderer::aspect = 0.0f;
 sfm::mat4f Renderer::proj_matrix;

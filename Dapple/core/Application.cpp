@@ -1,17 +1,20 @@
 #include "Application.h"
 
-#include "memory\DoubleBufferedAllocator.h"
-
 #include <chrono>
+
+#include "memory\DoubleBufferedAllocator.h"
+#include "containers\String.h"
+#include "fileIO\Win32_Files.h"
+
 
 Application::Application() 
 {
-	//m_Renderer = Renderer();
+	m_Renderer = Renderer();
 }
 
 void Application::Init(HINSTANCE hInstance, int nCmdShow)
 {
-	//m_Renderer.Init(hInstance, nCmdShow);
+	m_Renderer.Init(hInstance, nCmdShow);
 }
 
 WPARAM Application::Run() 
@@ -20,6 +23,15 @@ WPARAM Application::Run()
 
 	StackAllocator g_singleFrameAllocator = StackAllocator(128);
 	DoubleBufferedAllocator g_doubleBufAllocator = DoubleBufferedAllocator(128);
+
+	string filename = "main.cpp";
+
+	debug_readFileResult file = DEBUG_ReadEntireFile(filename);
+	if (file.Contents)
+	{
+		DEBUG_WriteEntireFile("writeTest.txt", file.ContentsSize, file.Contents);
+		DEBUG_FreeFileMemory(file.Contents);
+	}
 
 	MSG msg;
 	bool running = true;
@@ -46,7 +58,7 @@ WPARAM Application::Run()
 		}
 
 		auto time = std::chrono::high_resolution_clock::now();
-		//m_Renderer.Render(std::chrono::duration<float, std::milli>(time - start).count() / 1000.0f);
+		m_Renderer.Render(std::chrono::duration<float, std::milli>(time - start).count() / 1000.0f);
 	}
 
 	return msg.wParam;
@@ -54,6 +66,6 @@ WPARAM Application::Run()
 
 void Application::Render(float currentTime)
 {
-	//m_Renderer.Render(currentTime);
+	m_Renderer.Render(currentTime);
 }
 void Application::OnShutdown() {}

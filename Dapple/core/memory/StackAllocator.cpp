@@ -11,9 +11,18 @@ StackAllocator::StackAllocator(uint32_t stackSize_bytes)
 	m_size = stackSize_bytes;
 }
 
+StackAllocator::StackAllocator(StackAllocator& other)
+{
+	m_memory = new byte[other.m_size];
+	std::memcpy(m_memory, other.m_memory, other.m_size);
+	m_top = other.m_top;
+	m_size = other.m_size;
+}
+
 StackAllocator::~StackAllocator()
 {
 	delete[] m_memory;
+	m_memory = nullptr;
 }
 
 // Allocates a new block of the given size from stack top

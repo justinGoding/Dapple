@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
-#include <Windows.h>
-#include <sstream>
+#include "Core.h"
 
 // Custom stream buffer to redirect cout to OutputDebugString
 class DebugStreamBuffer : public std::streambuf

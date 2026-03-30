@@ -1,8 +1,5 @@
 #include "OpenGLShader.h"
 
-#include <cstdio>
-#include <fstream>
-
 GLuint OpenGLShader::load(const std::string& filepath, GLenum shader_type, bool check_errors)
 {
 	std::string shader_string;

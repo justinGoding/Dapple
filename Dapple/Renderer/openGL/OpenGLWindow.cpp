@@ -1,7 +1,7 @@
 #include "OpenGLWindow.h"
 
-#include "Dbt.h"
 #include <vector>
+#include "Dbt.h"
 
 bool OpenGLWindow::OpenGLFunctionsLoaded = false;
 

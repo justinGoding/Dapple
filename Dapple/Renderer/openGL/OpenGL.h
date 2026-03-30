@@ -1,14 +1,14 @@
 #pragma once
 
 #include "..\..\core\Core.h"
-
-#include <windows.h>
 #include <gl/gl.h>
+
 #include "GLHeaders/glext.h"
 #include "GLHeaders/wglext.h"
 #include "GLHeaders/glcorearb.h"
 
 #pragma comment (lib, "opengl32.lib")
+
 
 #define LOAD_GL_FUNC(x, p) x = reinterpret_cast<p>(wglGetProcAddress(#x)); \
 					if (x == nullptr) { MessageBoxA(NULL, #x, "Error loading OpenGL function", MB_OK); return false;}

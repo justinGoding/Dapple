@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core.h"
 #include "..\renderer\Renderer.h"
+#include "Core.h"
 
 class Application
 {

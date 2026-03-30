@@ -1,8 +1,9 @@
 #pragma once
 
-#include "OpenGL.h"
-
 #include <string>
+
+#include "..\core\Core.h"
+#include "OpenGL.h"
 
 class OpenGLShader
 {

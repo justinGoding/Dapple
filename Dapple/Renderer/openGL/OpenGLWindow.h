@@ -1,8 +1,8 @@
 #pragma once
 
-#include "OpenGL.h"
-
 #include <string>
+
+#include "OpenGL.h"
 
 typedef void (*WindowSizeFunction)(int width, int height);
 typedef void (*KeyEventFunction)(int key, int action);

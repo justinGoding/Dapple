@@ -1,11 +1,12 @@
 #pragma once
 
-#include "..\xxh64.h"
-
 #include <string>
+
+#include "..\xxh64.h"
 
 typedef uint64_t sid;
 typedef const char* string;
+typedef const WCHAR* wstring;
 
 inline sid operator"" _sid(string s, size_t len)
 {
