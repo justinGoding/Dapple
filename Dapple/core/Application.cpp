@@ -6,6 +6,12 @@
 #include "containers\String.h"
 #include "fileIO\Win32_Files.h"
 
+#include "containers\CircularQueue.h"
+
+void output_string(string str)
+{
+	std::cout << str << std::endl;
+}
 
 Application::Application() 
 {
@@ -20,6 +26,22 @@ void Application::Init(HINSTANCE hInstance, int nCmdShow)
 WPARAM Application::Run() 
 {
 	auto start = std::chrono::high_resolution_clock::now();
+
+	CircularQueue<int> q = CircularQueue<int>(10);
+
+
+	int i = 0;
+	while (true)
+	{
+		while (q.enqueue(i++)) {}
+
+		while (q.size() > 5)
+		{
+			int val = q.dequeue();
+			std::cout << "dequeued: " << val << std::endl;
+		}
+		std::cout << std::endl;
+	}
 
 	StackAllocator g_singleFrameAllocator = StackAllocator(128);
 	DoubleBufferedAllocator g_doubleBufAllocator = DoubleBufferedAllocator(128);

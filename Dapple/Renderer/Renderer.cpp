@@ -68,10 +68,10 @@ void Renderer::Render(float currentTime)
 {
 	const float f = currentTime;
 
-	static const GLfloat black[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	static const GLfloat gray[] = { 0.1f, 0.1f, 0.1f, 0.0f };
-	static const GLfloat blue[] = { 0.129f, 0.586f, 0.949f, 1.0f };
-	static const GLfloat ones[] = { 1.0f };
+	local_persist const GLfloat black[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	local_persist const GLfloat gray[] = { 0.1f, 0.1f, 0.1f, 0.0f };
+	local_persist const GLfloat blue[] = { 0.129f, 0.586f, 0.949f, 1.0f };
+	local_persist const GLfloat ones[] = { 1.0f };
 
 	glViewport(0, 0, m_Window.m_config.width, m_Window.m_config.height);
 	//glClearBufferfv(GL_COLOR, 0, black);
@@ -98,7 +98,7 @@ void Renderer::Render(float currentTime)
 
 	glUniformMatrix4fv(m_uniforms.mvp, 1, GL_FALSE, mv_matrix * proj_matrix);
 
-	static const unsigned int zero = 0;
+	local_persist const unsigned int zero = 0;
 	glBindBufferBase(GL_ATOMIC_COUNTER_BUFFER, 0, m_atomic_counter_buffer);
 	glBufferSubData(GL_ATOMIC_COUNTER_BUFFER, 0, sizeof(zero), &zero);
 

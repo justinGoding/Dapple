@@ -8,7 +8,7 @@
 class OpenGLShader
 {
 public:
-	static GLuint load(const std::string& filepath, GLenum shader_type = GL_FRAGMENT_SHADER,
+	non_instanced GLuint load(const std::string& filepath, GLenum shader_type = GL_FRAGMENT_SHADER,
 #ifdef _DEBUG
 		bool check_errors = true);
 #else

@@ -94,7 +94,12 @@ public:
 	{
 		int index = _hash(key);
 		int psl = 0;
-		while (m_table[index].psl != -1 && psl <= m_maxPSL)
+		while (m_table[index].psl != -1 && psl <= m_
+			
+			
+			
+			
+			PSL)
 		{
 			if (m_table[index].key() == key)
 			{

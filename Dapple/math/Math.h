@@ -1,14 +1,16 @@
 #pragma once
 
-#define DEG * 0.017453292519943f
+#include "..\core\Core.h"
 
 #include "VectorMath.h"
 #include "MatrixMath.h"
 
-// Random number generator 
-static unsigned int seed = 0x13371337;
+#define DEG * 0.017453292519943f
 
-static inline float random_float()
+// Random number generator 
+global_var unsigned int seed = 0x13371337;
+
+inline float random_float()
 {
 	float res;
 	unsigned int tmp;

@@ -39,8 +39,8 @@ private:
 	void CompileShaders();
 	std::string ReadFile(const std::string& filepath);
 
-	static void OnResize(int width, int height);
-	static void OnKeyEvent(int key, int action);
+	non_instanced void OnResize(int width, int height);
+	non_instanced void OnKeyEvent(int key, int action);
 
 	void PrintShaderLog(GLuint shader);
 
@@ -65,7 +65,7 @@ private:
 	GLuint m_atomic_counter_buffer;
 	GLuint m_dummy_vao;
 
-	static float aspect;
-	static sfm::mat4f proj_matrix;
+	non_instanced float aspect;
+	non_instanced sfm::mat4f proj_matrix;
 };
 

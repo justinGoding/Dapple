@@ -26,8 +26,8 @@ public:
 private:
 	ATOM RegisterTempClass(HINSTANCE hInstance);
 	ATOM RegisterOpenGLClass(HINSTANCE hInstance);
-	static LRESULT CALLBACK TempWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-	static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	non_instanced LRESULT CALLBACK TempWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+	non_instanced LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	bool CreateHelperWindow(HINSTANCE hInstance);
 	void PollMonitors();
@@ -39,7 +39,7 @@ private:
 
 
 public:
-	static bool OpenGLFunctionsLoaded;
+	non_instanced bool OpenGLFunctionsLoaded;
 
 	LPTSTR m_windowClass;
 	HWND m_helperWND;

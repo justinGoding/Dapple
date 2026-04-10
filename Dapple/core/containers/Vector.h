@@ -592,7 +592,7 @@ private:
 		{
 			for (int i = 0; i < count; i++)
 			{
-				// Explicity call destructor for the T object at this memory location
+				// Explicitly call destructor for the T object at this memory location
 				(buffer_start + i)->~T();
 			}
 		}

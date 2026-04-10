@@ -12,6 +12,7 @@
 #include <utility>
 
 #ifdef _WIN64
+#define NOMINMAX
 #include <Windows.h>
 #endif
 
@@ -20,6 +21,7 @@
 #define internal_linkage static
 #define local_persist static
 #define global_var static
+#define non_instanced static
 
 typedef int8_t int8;
 typedef int16_t int16;

@@ -31,6 +31,6 @@ protected:
 // Initialize the custom streambuf once at app startup
 inline void RedirectCoutToDebugger()
 {
-	static DebugStreamBuffer debugBuffer;
+	local_persist DebugStreamBuffer debugBuffer;
 	std::cout.rdbuf(&debugBuffer); // replace cout's buffer
 }

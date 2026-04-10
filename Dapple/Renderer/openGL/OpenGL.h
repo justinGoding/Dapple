@@ -13,7 +13,7 @@
 #define LOAD_GL_FUNC(x, p) x = reinterpret_cast<p>(wglGetProcAddress(#x)); \
 					if (x == nullptr) { MessageBoxA(NULL, #x, "Error loading OpenGL function", MB_OK); return false;}
 
-static bool ModernOpenGLLoaded = false;
+global_var bool ModernOpenGLLoaded = false;
 
 // Loaded at window creation
 extern PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB;
@@ -101,7 +101,7 @@ extern PFNGLBINDIMAGETEXTUREPROC glBindImageTexture;
 extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
 extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
 
-static bool LoadModernOpenGL()
+inline bool LoadModernOpenGL()
 {
 	if (ModernOpenGLLoaded) return true;
 

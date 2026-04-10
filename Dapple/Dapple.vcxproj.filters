@@ -57,6 +57,9 @@
     <ClCompile Include="core\memory\PoolAllocator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="asset_manager\AssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="renderer\openGL\GLHeaders\glcorearb.h">
@@ -147,6 +150,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\fileIO\Win32_Files.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="asset_manager\AssetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\containers\CircularQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\containers\Buffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

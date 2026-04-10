@@ -138,7 +138,11 @@ bool OpenGLWindow::Create(HINSTANCE hInstance, int nCmdShow)
 
 	AdjustWindowRectExForDpi(&rect, m_style, FALSE, m_exStyle, GetDpiForWindow(m_WND));
 
-	// Only update the restored window rect as the window may be maximized
+	// Only update the restored window rect as the window may be 
+	// 
+	// 
+	// 
+	// imized
 	GetWindowPlacement(m_WND, &wp);
 	wp.rcNormalPosition = rect;
 	wp.showCmd = SW_HIDE;
@@ -300,7 +304,7 @@ LRESULT OpenGLWindow::TempWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 
 LRESULT OpenGLWindow::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	static RECT border_thickness = { 4, 4, 4, 4 };
+	local_persist RECT border_thickness = { 4, 4, 4, 4 };
 
 	OpenGLWindow* window = (OpenGLWindow*) GetPropW(hWnd, L"OpenGL Window");
 	switch (uMsg)

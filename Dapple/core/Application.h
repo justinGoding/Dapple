@@ -1,7 +1,10 @@
 #pragma once
 
-#include "..\renderer\Renderer.h"
+#include <thread>
+
 #include "Core.h"
+
+#include "..\renderer\Renderer.h"
 
 class Application
 {
@@ -14,10 +17,10 @@ public:
 	void Render(float currentTime);
 	void OnShutdown();
 
-	static Application& Get() 
+	non_instanced Application& Get() 
 	{ 
 		// TODO: replace new with internal memory allocation
-		static Application* s_Instance = new Application();
+		local_persist Application* s_Instance = new Application();
 		return *s_Instance; 
 	}
 
