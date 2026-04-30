@@ -196,6 +196,7 @@
     <ClInclude Include="core\containers\HashMap.h" />
     <ClInclude Include="core\containers\List.h" />
     <ClInclude Include="core\containers\String.h" />
+    <ClInclude Include="core\containers\ThreadSafeQueue.h" />
     <ClInclude Include="core\containers\Vector.h" />
     <ClInclude Include="core\Core.h" />
     <ClInclude Include="core\fileIO\Win32_Files.h" />

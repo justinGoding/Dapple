@@ -141,7 +141,7 @@ public:
 	{
 		if (index < 0 || index >= m_size)
 		{
-			throw std::out_of_range("Vector::at: index out of range");
+			throw std::out_of_range("Buffer::at: index out of range");
 		}
 		return m_elements[index];
 	}
@@ -150,7 +150,7 @@ public:
 	{
 		if (index < 0 || index >= m_size)
 		{
-			throw std::out_of_range("Vector::at: index out of range (const)");
+			throw std::out_of_range("Buffer::at: index out of range (const)");
 		}
 		return m_elements[index];
 	}
@@ -178,6 +178,47 @@ public:
 	int size() const
 	{
 		return m_size;
+	}
+
+	void erase(int index)
+	{
+		for (int i = index; i < m_size - 1; i++)
+		{
+			m_elements[i] = std::move(m_elements[i + 1]);
+		}
+
+		if constexpr (!std::is_trivially_destructible_v<T>)
+			m_elements[m_size - 1].~T();
+
+		m_size--;
+	}
+
+	void unorderedErase(int index)
+	{
+		m_elements[index] = std::move(m_elements[m_size - 1]);
+		if constexpr (!std::is_trivially_destructible_v<T>)
+			m_elements[m_size - 1].~T();
+		m_size--;
+	}
+
+	void insert(int index, const T& value)
+	{
+		if (index < 0 || index > m_size)
+		{
+			throw std::out_of_range("Buffer::insert: index out of range");
+		}
+
+		new (m_elements + index) T(value);
+	}
+
+	void insert(int index, T&& value)
+	{
+		if (index < 0 || index > m_size)
+		{
+			throw std::out_of_range("Buffer::insert: index out of range");
+		}
+
+		new (m_elements + index) T(std::move(value));
 	}
 
 	void swap(Buffer& other) noexcept
@@ -261,7 +302,7 @@ private:
 		{
 			for (int i = 0; i < constructed_count; i++)
 			{
-				// Explicity call destructor for the T object at this memory location
+				// Explicity call destructor for the T value at this memory location
 				(dest_buffer + i)->~T();
 			}
 			throw;
@@ -274,7 +315,7 @@ private:
 		{
 			for (int i = 0; i < count; i++)
 			{
-				// Explicitly call destructor for the T object at this memory location
+				// Explicitly call destructor for the T value at this memory location
 				(buffer_start + i)->~T();
 			}
 		}

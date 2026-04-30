@@ -9,13 +9,12 @@ class CircularQueue
 {
 public:
 	CircularQueue() 
+		: m_buffer(new Buffer<T>(m_size))
 	{
-		m_buffer = new Buffer<T>(m_size);
 	}
 
-	CircularQueue(size_t size) : m_size(size)
+	CircularQueue(size_t size) : m_size(size), m_buffer(new Buffer<T>(m_size))
 	{
-		m_buffer = new Buffer<T>(m_size);
 	}
 
 	CircularQueue(const CircularQueue& other)
@@ -45,31 +44,32 @@ public:
 
 	bool isFull() const { return (m_back + 1) % m_size == m_front; }
 
-	bool enqueue(const T& object)
+	bool enqueue(const T& value)
 	{
 		if (isFull()) return false;
 
 		m_back = (m_back + 1) % m_size;
-		m_buffer->at(m_back) = object;
+		//m_buffer->at(m_back) = new T(value);
+		m_buffer->insert(m_back, value);
 		if (m_front == -1) m_front = 0;
 		return true;
 	}
 
-	bool enqueue(T&& object)
+	/*bool enqueue(T&& value)
 	{
 		if (isFull()) return false;
 
 		m_back = (m_back + 1) % m_size;
-		m_buffer->at(m_back) = T(std::move(object));
+		m_buffer->at(m_back) = T(std::move(value));
 		if (m_front == -1) m_front = 0;
 		return true;
-	}
+	}*/
 
-	T& dequeue()
+	T dequeue()
 	{
 		if (isEmpty()) throw std::out_of_range("CircularQueue::dequeue: queue is empty");
 
-		T& temp = m_buffer->at(m_front);
+		T temp = m_buffer->at(m_front);
 		if (m_front == m_back)
 			m_front = m_back = -1;
 		else
@@ -89,6 +89,17 @@ public:
 		if (isEmpty()) return 0;
 		if (m_back >= m_front) return m_back - m_front + 1;
 		else return m_size - (m_front - m_back) + 1;
+	}
+
+	CircularQueue& operator= (const CircularQueue& rhs)
+	{
+		if (this == &rhs)
+			return *this;
+
+		m_front = rhs.m_front;
+		m_back = rhs.m_back;
+		m_size = rhs.m_size;
+		*m_buffer = *rhs.m_buffer;
 	}
 
 private:

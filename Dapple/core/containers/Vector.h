@@ -188,7 +188,7 @@ public:
 
 	const T* cend() const
 	{
-		return m_elements + size;
+		return m_elements + m_size;
 	}
 
 	int size() const
@@ -283,14 +283,14 @@ public:
 		if (m_size > 0)
 		{
 			if constexpr (!std::is_trivially_destructible_v<T>)
-				m_elements[size - 1].~T();
+				m_elements[m_size - 1].~T();
 			m_size--;
 		}
 	}
 
 	void erase(int index)
 	{
-		for (int i = index; i < size - 1; i++)
+		for (int i = index; i < m_size - 1; i++)
 		{
 			m_elements[i] = std::move(m_elements[i + 1]);
 		}
@@ -298,12 +298,12 @@ public:
 		if constexpr (!std::is_trivially_destructible_v<T>)
 			m_elements[m_size - 1].~T();
 
-		size--;
+		m_size--;
 	}
 
 	void unorderedErase(int index)
 	{
-		m_elements[index] = std::move(m_elements[size - 1]); // Move last element into the gap
+		m_elements[index] = std::move(m_elements[m_size - 1]); // Move last element into the gap
 		popBack();
 	}
 
