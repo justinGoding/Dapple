@@ -164,6 +164,9 @@
     <ClInclude Include="core\containers\ThreadSafeQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="core\containers\MaxHeap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

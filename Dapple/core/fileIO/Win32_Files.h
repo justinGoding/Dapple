@@ -3,118 +3,27 @@
 #include "..\Core.h"
 #include "..\containers\String.h"
 
-
-#ifdef _DEBUG
-
-struct debug_readFileResult
+bool syncReadFile(string filePath, uint8* buffer, size_t bufferSize, size_t& rBytesRead)
 {
-	uint32 ContentsSize;
-	void* Contents;
-};
-
-inline void DEBUG_FreeFileMemory(void* memory)
-{
-	if (memory)
+	FILE* handle = fopen(filePath, "rb");
+	if (handle)
 	{
-		VirtualFree(memory, NULL, MEM_RELEASE);
+		// BLOCK here until all data has been read
+		size_t bytesRead = fread(buffer, 1, bufferSize, handle);
+
+		int err = ferror(handle); // get error if any
+
+		fclose(handle);
+
+		if (0 == err)
+		{
+			rBytesRead = bytesRead;
+			return true;
+		}
+		rBytesRead = 0;
+		return false;
 	}
 }
-
-inline debug_readFileResult DEBUG_ReadEntireFile(string filename)
-{
-	debug_readFileResult result = {};
-
-	HANDLE fileHandle = CreateFileA(
-		filename,			// file path
-		GENERIC_READ,		// desired access
-		FILE_SHARE_READ,	// share mode
-		NULL,				// security attributes
-		OPEN_EXISTING,		// creation disposition
-		NULL,				// flags and attributes
-		NULL				// template file
-	);
-
-	if (fileHandle != INVALID_HANDLE_VALUE)
-	{
-		LARGE_INTEGER fileSize;
-		if (GetFileSizeEx(fileHandle, &fileSize))
-		{
-			uint32 fileSize32 = safeTruncateUInt64(fileSize.QuadPart);
-
-			result.Contents = VirtualAlloc(NULL, fileSize32, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
-			if (result.Contents)
-			{
-				DWORD bytesRead;
-				if (ReadFile(fileHandle,result.Contents, fileSize32, &bytesRead, NULL) 
-					&& fileSize32 == bytesRead)
-				{
-					result.ContentsSize = fileSize32;
-				}
-				else
-				{
-					// TODO: logging
-					DEBUG_FreeFileMemory(result.Contents);
-					result.Contents = nullptr;
-				}
-			}
-			else
-			{
-				// TODO: logging
-			}
-		}
-		else
-		{
-			// TODO: logging
-		}
-
-		CloseHandle(fileHandle);
-	}
-	else
-	{
-		// TODO: logging
-	}
-
-	return result;
-}
-
-inline bool DEBUG_WriteEntireFile(string filename, uint32 memory_size, void* memory)
-{
-	bool result = false;
-
-	HANDLE fileHandle = CreateFileA(
-		filename,			// file path
-		GENERIC_WRITE,		// desired access
-		NULL,				// share mode
-		NULL,				// security attributes
-		CREATE_ALWAYS,		// creation disposition
-		NULL,				// flags and attributes
-		NULL				// template file
-	);
-
-	if (fileHandle != INVALID_HANDLE_VALUE)
-	{
-		DWORD bytesWritten;
-		if (WriteFile(fileHandle, memory, memory_size, &bytesWritten, NULL))
-		{
-			// NOTE: File read successfully
-			result = (bytesWritten == memory_size);
-		}
-		else
-		{
-			// TODO: logging
-		}
-		
-		CloseHandle(fileHandle);
-	}
-	else
-	{
-		// TODO: logging
-	}
-
-	return result;
-}
-
-#endif
 
 //AsyncRequestHandle g_hRequest; // async I/O request handle
 //uint8_t g_asyncBuffer[512]; // input buffer
