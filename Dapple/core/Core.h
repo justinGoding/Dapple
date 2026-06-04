@@ -33,6 +33,8 @@ typedef uint16_t uint16;
 typedef uint32_t uint32;
 typedef uint64_t uint64;
 
+typedef byte uint8;
+
 inline uint32 safeTruncateUInt64(uint64 val)
 {
 	assert(val <= UINT32_MAX);

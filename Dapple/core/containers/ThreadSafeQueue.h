@@ -2,6 +2,7 @@
 
 #include <condition_variable>
 #include <mutex>
+#include <optional>
 
 #include "CircularQueue.h"
 
@@ -39,6 +40,19 @@ public:
 		m_queue = CircularQueue<T>(std::move(other.m_queue));
 	}
 
+	~ThreadSafeQueue()
+	{
+		delete m_mutex;
+		delete m_notEmpty;
+		delete m_notFull;
+	}
+
+	bool empty() const { return m_queue.empty(); }
+
+	bool full() const { return m_queue.full(); }
+
+	int size() const { return m_queue.size(); }
+
 	void close()
 	{
 		m_closed = true;
@@ -46,43 +60,45 @@ public:
 		m_notEmpty->notify_all();
 	}
 
-	bool enqueue(const T& object)
+	bool enqueue(const T& item)
 	{
 		std::unique_lock lock(*m_mutex);
-		while (m_queue.isFull())
+		while (m_queue.full())
 		{
 			m_notFull->wait(lock);
-			if (m_closed) exit(1);
+			if (m_closed) return false;
 		}
 
-		bool result = m_queue.enqueue(object);
-		m_notEmpty->notify_one();
+		bool result = m_queue.enqueue(item);
+		if (result) m_notEmpty->notify_one();
 		return result;
 	}
 
-	/*bool enqueue(T&& object)
+	bool enqueue(T&& item)
 	{
 		std::unique_lock lock(*m_mutex);
-		while (m_queue.isFull())
+		while (m_queue.full())
 		{
 			m_notFull->wait(lock);
+			if (m_closed) return false;
 		}
 
-		bool result = m_queue.enqueue(std::move(object));
-		m_notEmpty->notify_one();
+		bool result = m_queue.enqueue(std::move(item));
+		if (result) m_notEmpty->notify_one();
 		return result;
-	}*/
+	}
 
-	T dequeue()
+	std::optional<T> dequeue()
 	{
+		std::optional<T> item;
 		std::unique_lock lock(*m_mutex);
-		while (m_queue.isEmpty())
+		while (m_queue.empty())
 		{
 			m_notEmpty->wait(lock);
-			if (m_closed) return T();
+			if (m_closed) return item;
 		}
 
-		T item = m_queue.dequeue();
+		item = m_queue.dequeue();
 		m_notFull->notify_one();
 		return item;
 	}

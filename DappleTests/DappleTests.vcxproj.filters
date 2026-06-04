@@ -15,10 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DappleTests.cpp">
+    <ClCompile Include="MaxHeapTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadSafeQueueTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

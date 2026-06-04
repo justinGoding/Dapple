@@ -1,26 +1,54 @@
 #pragma once
 
+#include <thread>
+
 #include "..\core\Core.h"
+#include "..\core\containers\String.h"
+#include "..\core\containers\ThreadSafeMaxHeap.h"
 
 enum game_asset_id
 {
 	guid_count,
 };
 
-struct loaded_bitmap
+struct assetTicket
 {
+	assetTicket(string filepath, uint8 priority)
+		: filepath(filepath), priority(priority)
+	{
+	}
 
+	string filepath;
+	byte* buffer;
+	uint8 priority;
 };
 
 class AssetManager
 {
 public:
-	AssetManager() {}
+	AssetManager() : m_queue(ThreadSafeMaxHeap<assetTicket>()), m_loadingThread(std::thread(_load_assets))
+	{
+		m_loadingThread.detach();
+	}
 
-	void loadAsset(game_asset_id id);
+	~AssetManager()
+	{
+		m_runLoadingThread = false;
+		m_queue.close();
+	}
 
-	loaded_bitmap* getBitmap(game_asset_id id) { return &m_bitmaps[id]; }
+	template <typename T>
+	void loadAsset(string filepath, T* buffer);
+
+	template <typename T>
+	void asyncLoadAsset(string filepath, T* buffer, uint8 priority = 1);
 
 private:
-	loaded_bitmap m_bitmaps[guid_count];
+	void _load_assets();
+
+private:
+	ThreadSafeMaxHeap<assetTicket> m_queue;
+	std::thread m_loadingThread;
+
+	volatile bool m_runLoadingThread = true;
 };

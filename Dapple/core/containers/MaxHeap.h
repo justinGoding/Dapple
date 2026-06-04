@@ -8,16 +8,29 @@ template <typename T>
 class MaxHeap
 {
 public:
-	MaxHeap(int capacity = 10) : m_buffer(Buffer<T>(capacity + 1))
+	MaxHeap(size_t capacity = 10) : m_buffer(Buffer<T>(capacity + 1))
 	{
+	}
+
+	MaxHeap(const MaxHeap& other)
+	{
+		m_buffer = &Buffer<T>(other.m_buffer);
+		m_size = other.m_size;
+	}
+
+	MaxHeap(MaxHeap&& other) noexcept
+		: m_buffer(other.m_buffer), m_size(other.m_size)
+	{
+		other.m_buffer = nullptr;
 	}
 
 	int size() { return m_size; }
 	bool empty() { return m_size == 0; }
+	bool full() { return m_size == m_buffer.size() - 1; }
 
 	bool push(T item)
 	{
-		if (m_size + 1 >= m_buffer.size()) return false;
+		if (full()) return false;
 
 		m_buffer.insert(m_size + 1, item);
 		m_size++;

@@ -197,10 +197,11 @@
     <ClInclude Include="core\containers\MaxHeap.h" />
     <ClInclude Include="core\containers\List.h" />
     <ClInclude Include="core\containers\String.h" />
+    <ClInclude Include="core\containers\ThreadSafeMaxHeap.h" />
     <ClInclude Include="core\containers\ThreadSafeQueue.h" />
     <ClInclude Include="core\containers\Vector.h" />
     <ClInclude Include="core\Core.h" />
-    <ClInclude Include="core\fileIO\Win32_Files.h" />
+    <ClInclude Include="core\fileIO\Files.h" />
     <ClInclude Include="core\xxh64.h" />
     <ClInclude Include="core\DebugStreamBuffer.h" />
     <ClInclude Include="core\memory\CustomAllocation.h" />
