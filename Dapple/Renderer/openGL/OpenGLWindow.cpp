@@ -3,6 +3,8 @@
 #include <vector>
 #include "Dbt.h"
 
+#include "..\core\Config.h"
+
 bool OpenGLWindow::OpenGLFunctionsLoaded = false;
 
 OpenGLWindow::OpenGLWindow()
@@ -223,6 +225,10 @@ bool OpenGLWindow::Create(HINSTANCE hInstance, int nCmdShow)
 	GetStartupInfo(&si);*/
 	ShowWindow(m_WND, nCmdShow);
 
+#if VSYNC == true
+	enableVSync();
+#endif
+
 	return true;
 }
 
@@ -438,4 +444,19 @@ void OpenGLWindow::LastWin32Error()
 
 	LocalFree(lpMsgBuf);
 	ExitProcess(dw);
+}
+
+void OpenGLWindow::enableVSync()
+{
+	wglSwapIntervalEXT(1);
+}
+
+void OpenGLWindow::disableVSync()
+{
+	wglSwapIntervalEXT(0);
+}
+
+bool OpenGLWindow::vSyncEnabled()
+{
+	return wglGetSwapIntervalEXT() == 1;
 }

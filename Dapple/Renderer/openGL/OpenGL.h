@@ -101,6 +101,33 @@ extern PFNGLBINDIMAGETEXTUREPROC glBindImageTexture;
 extern PFNGLGETPROGRAMIVPROC glGetProgramiv;
 extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
 
+extern PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT;
+extern PFNWGLGETSWAPINTERVALEXTPROC wglGetSwapIntervalEXT;
+
+
+inline bool WGLExtensionSupported(const char* extension_name)
+{
+	PFNWGLGETEXTENSIONSSTRINGEXTPROC wglGetExtensionsStringEXT = nullptr;
+	LOAD_GL_FUNC(wglGetExtensionsStringEXT, PFNWGLGETEXTENSIONSSTRINGEXTPROC);
+
+	if (strstr(wglGetExtensionsStringEXT(), extension_name) == NULL)
+	{
+		return false;
+	}
+	return true;
+}
+
+inline bool loadWGLSwapIntervalControl()
+{
+	if (WGLExtensionSupported("WGL_EXT_swap_control"))
+	{
+		LOAD_GL_FUNC(wglSwapIntervalEXT, PFNWGLSWAPINTERVALEXTPROC);
+		LOAD_GL_FUNC(wglGetSwapIntervalEXT, PFNWGLGETSWAPINTERVALEXTPROC);
+		return true;
+	}
+	return false;
+}
+
 inline bool LoadModernOpenGL()
 {
 	if (ModernOpenGLLoaded) return true;
@@ -184,6 +211,8 @@ inline bool LoadModernOpenGL()
 	LOAD_GL_FUNC(glBindImageTexture, PFNGLBINDIMAGETEXTUREPROC);
 	LOAD_GL_FUNC(glGetProgramiv, PFNGLGETPROGRAMIVPROC);
 	LOAD_GL_FUNC(glGetProgramInfoLog, PFNGLGETPROGRAMINFOLOGPROC);
+
+	loadWGLSwapIntervalControl();
 
 	ModernOpenGLLoaded = true;
 	return true;

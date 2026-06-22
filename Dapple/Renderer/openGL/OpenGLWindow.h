@@ -37,6 +37,10 @@ private:
 	void ShowMessage(LPCWSTR message);
 	void LastWin32Error();
 
+	void enableVSync();
+	void disableVSync();
+	bool vSyncEnabled();
+
 
 public:
 	non_instanced bool OpenGLFunctionsLoaded;

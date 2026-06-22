@@ -98,10 +98,11 @@ void Application::updateFrameTime()
 		std::this_thread::sleep_for(sleep_time);
 	}
 
-	m_clock._update();
 	frameDuration = m_clock.elapsedTime(m_lastFrameTime);
 	m_lastFrameTime = m_clock.timestamp();
 #endif
+
+	m_clock._update();
 
 #if AVERAGE_FRAME_TIME == true
 	totalTimeOfFrames -= frameTimes[frameTimesIndex];

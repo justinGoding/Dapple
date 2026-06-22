@@ -84,3 +84,6 @@ PFNGLMEMORYBARRIERPROC glMemoryBarrier = nullptr;
 PFNGLBINDIMAGETEXTUREPROC glBindImageTexture = nullptr;
 PFNGLGETPROGRAMIVPROC glGetProgramiv = nullptr;
 PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog = nullptr;
+
+PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = nullptr;
+PFNWGLGETSWAPINTERVALEXTPROC wglGetSwapIntervalEXT = nullptr;
