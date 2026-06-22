@@ -191,6 +191,8 @@
   <ItemGroup>
     <ClInclude Include="asset_manager\AssetManager.h" />
     <ClInclude Include="core\Application.h" />
+    <ClInclude Include="core\Clock.h" />
+    <ClInclude Include="core\Config.h" />
     <ClInclude Include="core\containers\Buffer.h" />
     <ClInclude Include="core\containers\CircularQueue.h" />
     <ClInclude Include="core\containers\HashMap.h" />

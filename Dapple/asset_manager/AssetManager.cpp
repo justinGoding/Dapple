@@ -12,7 +12,7 @@ void AssetManager::loadAsset(string filepath, T* buffer)
 template <typename T>
 void AssetManager::asyncLoadAsset(string filepath, T* buffer, uint8 priority)
 {
-	m_queue.push(assetTicket(filepath, reinterpret_cast<byte*>(buffer), priority)
+	m_queue.push(assetTicket(filepath, reinterpret_cast<byte*>(buffer), priority));
 }
 
 void AssetManager::_load_assets()

@@ -170,6 +170,12 @@
     <ClInclude Include="core\containers\ThreadSafeMaxHeap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="core\Clock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -19,14 +19,16 @@ struct assetTicket
 	}
 
 	string filepath;
-	byte* buffer;
+	byte* buffer = nullptr;
 	uint8 priority;
 };
+
+bool operator >(assetTicket a, assetTicket b) { return a.priority > b.priority; }
 
 class AssetManager
 {
 public:
-	AssetManager() : m_queue(ThreadSafeMaxHeap<assetTicket>()), m_loadingThread(std::thread(_load_assets))
+	AssetManager() : m_queue(ThreadSafeMaxHeap<assetTicket>()), m_loadingThread(std::thread(&AssetManager::_load_assets, this))
 	{
 		m_loadingThread.detach();
 	}
